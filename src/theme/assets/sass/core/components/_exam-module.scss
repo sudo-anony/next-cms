@@ -1,0 +1,128 @@
+.video-container {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+    width: 150px;
+    height: 100px;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.video-element {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.set-134-percent-height {
+    height: calc(100vh - 141px) !important;
+}
+
+.css-1scal0h-MuiPaginationItem-root {
+    color: white !important;
+}
+
+.set-80-percent-height {
+    height: calc(100vh - 115px) !important;
+}
+
+
+.pagination {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 20px
+}
+
+.message {
+    position: absolute;
+    top: 300px;
+    left: 50px;
+    padding: 10px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: #fff;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.fullscreen-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.exam-module-container>* {
+    padding-right: 0px !important;
+    padding-left: 0px !important;
+}
+
+.fullscreen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.exam-fullscreen-overlay {
+    background: rgba(0, 0, 0, 0.9);
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.fullscreen-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.main-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.resizer {
+    width: 5px;
+    background: #ccc;
+    cursor: ew-resize;
+    position: relative;
+    z-index: 1;
+}
+
+.resizer:hover,
+.resizer:active {
+    background: #aaa;
+}
+
+.column {
+    overflow: auto;
+    height: 100%;
+}
+
+@media (max-width: 768px) {
+    .fullscreen-container {
+        flex-direction: column;
+    }
+
+    .resizer {
+        display: none;
+    }
+}
