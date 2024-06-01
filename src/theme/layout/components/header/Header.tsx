@@ -1,8 +1,9 @@
-import React, {FC, useEffect} from 'react'
-import {MenuInner} from './MenuInner'
-import {SwapperComponent} from '../../../assets/ts/components'
+import React, { FC, useEffect } from 'react'
+import { MenuInner } from './MenuInner'
+import { SwapperComponent } from '../../../assets/ts/components'
 
 const Header: FC = () => {
+  debugger
   useEffect(() => {
     SwapperComponent.reinitialization()
   }, [])
@@ -32,4 +33,4 @@ const Header: FC = () => {
   )
 }
 
-export {Header}
+export { Header }

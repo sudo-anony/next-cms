@@ -10,10 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+
   children,
 }: Readonly<{
+
   children: React.ReactNode;
 }>) {
+  debugger
   return (
     <html lang="en">
       <body className={inter.className}>{children}</body>

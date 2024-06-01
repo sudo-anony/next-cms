@@ -1,4 +1,3 @@
-// src/components/App.tsx
 import React, { Suspense, ReactNode } from 'react';
 import { I18nProvider } from '../theme/i18n/i18nProvider';
 import { LayoutProvider, LayoutSplashScreen } from '../theme/layout/core';

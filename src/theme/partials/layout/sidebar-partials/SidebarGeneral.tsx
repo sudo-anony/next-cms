@@ -1,42 +1,42 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import clsx from 'clsx'
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import ApexCharts from 'apexcharts'
-import {toAbsoluteUrl, KTSVG} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
+import { toAbsoluteUrl, KTSVG } from '../../../helpers'
+import { Dropdown1 } from '../../content/dropdown/Dropdown1'
 
 const chartsData: Array<{
   tabId: number
   selector: string
   values: Array<number>
 }> = [
-  {
-    tabId: 0,
-    selector: '#kt_sidebar_tab_1_chart',
-    values: [40, 30, 25, 40, 50, 30],
-  },
-  {
-    tabId: 1,
-    selector: '#kt_sidebar_tab_2_chart',
-    values: [30, 30, 25, 45, 30, 40],
-  },
-  {
-    tabId: 2,
-    selector: '#kt_sidebar_tab_3_chart',
-    values: [25, 30, 40, 30, 35, 30],
-  },
-  {
-    tabId: 3,
-    selector: '#kt_sidebar_tab_4_chart',
-    values: [25, 30, 35, 40, 50, 30],
-  },
-  {
-    tabId: 4,
-    selector: '#kt_sidebar_tab_5_chart',
-    values: [40, 20, 50, 50, 55, 45],
-  },
-]
+    {
+      tabId: 0,
+      selector: '#kt_sidebar_tab_1_chart',
+      values: [40, 30, 25, 40, 50, 30],
+    },
+    {
+      tabId: 1,
+      selector: '#kt_sidebar_tab_2_chart',
+      values: [30, 30, 25, 45, 30, 40],
+    },
+    {
+      tabId: 2,
+      selector: '#kt_sidebar_tab_3_chart',
+      values: [25, 30, 40, 30, 35, 30],
+    },
+    {
+      tabId: 3,
+      selector: '#kt_sidebar_tab_4_chart',
+      values: [25, 30, 35, 40, 50, 30],
+    },
+    {
+      tabId: 4,
+      selector: '#kt_sidebar_tab_5_chart',
+      values: [40, 20, 50, 50, 55, 45],
+    },
+  ]
 
 export function SidebarGeneral() {
   const [activeTab, setActiveTab] = useState(2)
@@ -198,7 +198,7 @@ export function SidebarGeneral() {
               setTab(0)
               activateChart(0)
             }}
-            className={clsx('nav-link', {active: activeTab === 0})}
+            className={clsx('nav-link', { active: activeTab === 0 })}
             id='kt_sidebar_tab_1'
           >
             <img
@@ -220,7 +220,7 @@ export function SidebarGeneral() {
               setTab(1)
               activateChart(1)
             }}
-            className={clsx('nav-link', {active: activeTab === 1})}
+            className={clsx('nav-link', { active: activeTab === 1 })}
             id='kt_sidebar_tab_2'
           >
             <img
@@ -242,7 +242,7 @@ export function SidebarGeneral() {
               setTab(2)
               activateChart(2)
             }}
-            className={clsx('nav-link', {active: activeTab === 2})}
+            className={clsx('nav-link', { active: activeTab === 2 })}
             id='kt_sidebar_tab_3'
           >
             <img
@@ -264,7 +264,7 @@ export function SidebarGeneral() {
               setTab(3)
               activateChart(3)
             }}
-            className={clsx('nav-link', {active: activeTab === 3})}
+            className={clsx('nav-link', { active: activeTab === 3 })}
             id='kt_sidebar_tab_4'
           >
             <img
@@ -286,7 +286,7 @@ export function SidebarGeneral() {
               setTab(4)
               activateChart(4)
             }}
-            className={clsx('nav-link', {active: activeTab === 4})}
+            className={clsx('nav-link', { active: activeTab === 4 })}
             id='kt_sidebar_tab_5'
           >
             <img
@@ -317,7 +317,7 @@ export function SidebarGeneral() {
         >
           <div className='tab-content'>
             <div
-              className={clsx('tab-pane', {active: activeTab === 0})}
+              className={clsx('tab-pane', { active: activeTab === 0 })}
               id='kt_sidebar_tab_pane_1'
               role='tabpanel'
             >
@@ -351,7 +351,7 @@ export function SidebarGeneral() {
                   <div
                     id='kt_sidebar_tab_1_chart'
                     className='apexcharts-bar-hover-danger'
-                    style={{height: '250px'}}
+                    style={{ height: '250px' }}
                   ></div>
                   {/* end::Chart */}
                 </div>
@@ -516,7 +516,7 @@ export function SidebarGeneral() {
             </div>
 
             <div
-              className={clsx('tab-pane', {active: activeTab === 1})}
+              className={clsx('tab-pane', { active: activeTab === 1 })}
               id='kt_sidebar_tab_pane_2'
               role='tabpanel'
             >
@@ -550,7 +550,7 @@ export function SidebarGeneral() {
                   <div
                     id='kt_sidebar_tab_2_chart'
                     className='apexcharts-bar-hover-danger'
-                    style={{height: '250px'}}
+                    style={{ height: '250px' }}
                   ></div>
                   {/* end::Chart */}
                 </div>
@@ -715,7 +715,7 @@ export function SidebarGeneral() {
             </div>
 
             <div
-              className={clsx('tab-pane', {active: activeTab === 2})}
+              className={clsx('tab-pane', { active: activeTab === 2 })}
               id='kt_sidebar_tab_pane_3'
               role='tabpanel'
             >
@@ -749,7 +749,7 @@ export function SidebarGeneral() {
                   <div
                     id='kt_sidebar_tab_3_chart'
                     className='apexcharts-bar-hover-danger'
-                    style={{height: '250px'}}
+                    style={{ height: '250px' }}
                   ></div>
                   {/* end::Chart */}
                 </div>
@@ -914,7 +914,7 @@ export function SidebarGeneral() {
             </div>
 
             <div
-              className={clsx('tab-pane', {active: activeTab === 3})}
+              className={clsx('tab-pane', { active: activeTab === 3 })}
               id='kt_sidebar_tab_pane_4'
               role='tabpanel'
             >
@@ -948,7 +948,7 @@ export function SidebarGeneral() {
                   <div
                     id='kt_sidebar_tab_4_chart'
                     className='apexcharts-bar-hover-danger'
-                    style={{height: '250px'}}
+                    style={{ height: '250px' }}
                   ></div>
                   {/* end::Chart */}
                 </div>
@@ -1113,7 +1113,7 @@ export function SidebarGeneral() {
             </div>
 
             <div
-              className={clsx('tab-pane', {active: activeTab === 4})}
+              className={clsx('tab-pane', { active: activeTab === 4 })}
               id='kt_sidebar_tab_pane_5'
               role='tabpanel'
             >
@@ -1147,7 +1147,7 @@ export function SidebarGeneral() {
                   <div
                     id='kt_sidebar_tab_5_chart'
                     className='apexcharts-bar-hover-danger'
-                    style={{height: '250px'}}
+                    style={{ height: '250px' }}
                   ></div>
                   {/* end::Chart */}
                 </div>

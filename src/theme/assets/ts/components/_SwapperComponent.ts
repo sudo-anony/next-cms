@@ -68,7 +68,7 @@ class SwapperComponent {
 
   constructor(_element: HTMLElement, _options: ISwapperOptions, _queries: ISwapperQueries) {
     this.element = _element
-    this.options = Object.assign(defaultSwapperOptions, _options)
+    this.options = Object.assign({}, defaultSwapperOptions, _options)
     this.queries = _queries
 
     // Initial update
@@ -150,14 +150,16 @@ class SwapperComponent {
     options: ISwapperOptions = defaultSwapperOptions,
     queries: ISwapperQueries = defaultSwapperQueires
   ) => {
-    const elements = document.body.querySelectorAll(selector)
-    elements.forEach((el) => {
-      const item = el as HTMLElement
-      let place = SwapperComponent.getInstance(item)
-      if (!place) {
-        place = new SwapperComponent(item, options, queries)
-      }
-    })
+    if (typeof window !== 'undefined') {
+      const elements = document.body.querySelectorAll(selector)
+      elements.forEach((el) => {
+        const item = el as HTMLElement
+        let place = SwapperComponent.getInstance(item)
+        if (!place) {
+          place = new SwapperComponent(item, options, queries)
+        }
+      })
+    }
   }
 
   public static createInsance = (
@@ -165,16 +167,18 @@ class SwapperComponent {
     options: ISwapperOptions = defaultSwapperOptions,
     queries: ISwapperQueries = defaultSwapperQueires
   ): SwapperComponent | undefined => {
-    const element = document.body.querySelector(selector)
-    if (!element) {
-      return
+    if (typeof window !== 'undefined') {
+      const element = document.body.querySelector(selector)
+      if (!element) {
+        return
+      }
+      const item = element as HTMLElement
+      let place = SwapperComponent.getInstance(item)
+      if (!place) {
+        place = new SwapperComponent(item, options, queries)
+      }
+      return place
     }
-    const item = element as HTMLElement
-    let place = SwapperComponent.getInstance(item)
-    if (!place) {
-      place = new SwapperComponent(item, options, queries)
-    }
-    return place
   }
 
   public static bootstrap = (selector: string = defaultSwapperQueires.instanseQuery) => {
@@ -187,22 +191,24 @@ class SwapperComponent {
 }
 
 // Window resize handler
-window.addEventListener('resize', function () {
-  let timer
-  throttle(
-    timer,
-    () => {
-      // Locate and update Offcanvas instances on window resize
-      const elements = document.querySelectorAll(defaultSwapperQueires.instanseQuery)
-      elements.forEach((el) => {
-        const place = SwapperComponent.getInstance(el as HTMLElement)
-        if (place) {
-          place.update()
-        }
-      })
-    },
-    200
-  )
-})
+if (typeof window !== 'undefined') {
+  window.addEventListener('resize', function () {
+    let timer
+    throttle(
+      timer,
+      () => {
+        // Locate and update Offcanvas instances on window resize
+        const elements = document.querySelectorAll(defaultSwapperQueires.instanseQuery)
+        elements.forEach((el) => {
+          const place = SwapperComponent.getInstance(el as HTMLElement)
+          if (place) {
+            place.update()
+          }
+        })
+      },
+      200
+    )
+  })
+}
 
-export {SwapperComponent, defaultSwapperOptions, defaultSwapperQueires}
+export { SwapperComponent, defaultSwapperOptions, defaultSwapperQueires }

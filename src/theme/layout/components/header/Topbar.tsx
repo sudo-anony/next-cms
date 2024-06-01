@@ -1,7 +1,7 @@
 import clsx from 'clsx'
-import React, {FC} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../helpers'
-import {HeaderNotificationsMenu, HeaderUserMenu, QuickLinks, Search} from '../../../partials'
+import React, { FC } from 'react'
+import { KTSVG, toAbsoluteUrl } from '../../../helpers'
+import { HeaderNotificationsMenu, HeaderUserMenu, QuickLinks, Search } from '../../../partials'
 
 const toolbarButtonMarginClass = 'ms-1 ms-lg-3',
   toolbarButtonHeightClass = 'w-30px h-30px w-md-40px h-md-40px',
@@ -125,4 +125,4 @@ const Topbar: FC = () => {
   )
 }
 
-export {Topbar}
+export { Topbar }

@@ -1,11 +1,8 @@
-// src/pages/auth/index.tsx
 import React from 'react';
-import { AuthPage } from '@/modules/auth';
-debugger
+import { AuthPage } from '@/modules/auth/AuthPage';
+
 const Auth = () => {
-    <>
-        return <AuthPage />;
-    </>
+    return <AuthPage />;
 };
 
 export default Auth;

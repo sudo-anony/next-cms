@@ -72,9 +72,9 @@ export function Login() {
         <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
         <div className='text-gray-400 fw-bold fs-4'>
           New Here?{' '}
-          <Link to='/auth/registration' className='link-primary fw-bolder'>
+          {/* <Link to='/auth/registration' className='link-primary fw-bolder'>
             Create an Account
-          </Link>
+          </Link> */}
         </div>
       </div>
       {formik.status ? (
@@ -115,13 +115,13 @@ export function Login() {
         <div className='d-flex justify-content-between mt-n5'>
           <div className='d-flex flex-stack mb-2'>
             <label className='form-label fw-bolder text-dark fs-6 mb-0'>Password</label>
-            <Link
+            {/* <Link
               to='/auth/forgot-password'
               className='link-primary fs-6 fw-bolder'
               style={{ marginLeft: '5px' }}
             >
               Forgot Password ?
-            </Link>
+            </Link> */}
           </div>
         </div>
         <input

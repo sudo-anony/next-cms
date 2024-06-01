@@ -1,9 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {useRef, useEffect} from 'react'
-import ApexCharts, {ApexOptions} from 'apexcharts'
-import {KTSVG, toAbsoluteUrl} from '../../../helpers'
-import {Dropdown1} from '../../content/dropdown/Dropdown1'
-import {getCSS} from '../../../assets/ts/_utils'
+import React, { useRef, useEffect } from 'react'
+import ApexCharts, { ApexOptions } from 'apexcharts'
+import { KTSVG, toAbsoluteUrl } from '../../../helpers'
+import { Dropdown1 } from '../../content/dropdown/Dropdown1'
+import { getCSS } from '../../../assets/ts/_utils'
 
 export function SidebarUser() {
   const chartRef = useRef<HTMLDivElement | null>(null)
@@ -58,7 +58,7 @@ export function SidebarUser() {
                     </span>
                   </div>
                 </div>
-                <div ref={chartRef} id='kt_user_chart' style={{height: '200px'}}></div>
+                <div ref={chartRef} id='kt_user_chart' style={{ height: '200px' }}></div>
               </div>
               {/* end::Chart */}
 

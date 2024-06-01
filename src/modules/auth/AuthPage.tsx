@@ -6,8 +6,7 @@ import { Login } from './components/Login';
 import { toAbsoluteUrl } from '@/theme/helpers';
 
 export function AuthPage() {
-  debugger
-  const location = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     document.body.classList.add('bg-white');
@@ -17,7 +16,7 @@ export function AuthPage() {
   }, []);
 
   const renderComponent = () => {
-    const { pathname } = location;
+    const { pathname } = router;
     switch (pathname) {
       case '/auth/login':
         return <Login />;
@@ -69,3 +68,5 @@ export function AuthPage() {
     </div>
   );
 }
+
+export default AuthPage;
