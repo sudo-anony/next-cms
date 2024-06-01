@@ -11,7 +11,7 @@ import {
   MixedWidget9,
   MixedWidget10,
   MixedWidget11,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 const Mixed: FC = () => {
   return (

@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-no-target-blank */
 import React from 'react'
-import {useIntl} from 'react-intl'
-import {KTSVG} from '../../../helpers'
-import {AsideMenuItemWithSub} from './AsideMenuItemWithSub'
-import {AsideMenuItem} from './AsideMenuItem'
+import { useIntl } from 'react-intl'
+import { KTSVG } from '../../../helpers'
+import { AsideMenuItemWithSub } from './AsideMenuItemWithSub'
+import { AsideMenuItem } from './AsideMenuItem'
 
 export function AsideMenuMain() {
   const intl = useIntl()
@@ -14,17 +14,17 @@ export function AsideMenuMain() {
         to='/dashboard'
         icon='/media/icons/duotune/art/art002.svg'
         title={intl.formatMessage({ id: 'MENU.DASHBOARD' })}
-        fontIcon='bi-app-indicator' children={undefined}      />
-        <AsideMenuItem
+        fontIcon='bi-app-indicator' children={undefined} />
+      <AsideMenuItem
         to='/exam-attemption'
         icon='/media/icons/duotune/art/art002.svg'
         title={intl.formatMessage({ id: 'MENU.EXAMBUILDER' })}
-        fontIcon='bi-app-indicator' children={undefined}      />
+        fontIcon='bi-app-indicator' children={undefined} />
       <AsideMenuItem
         to='/builder'
         icon='/media/icons/duotune/general/gen019.svg'
         title='Layout Builder'
-        fontIcon='bi-layers' children={undefined}      />
+        fontIcon='bi-layers' children={undefined} />
       <div className='menu-item'>
         <div className='menu-content pt-8 pb-2'>
           <span className='menu-section text-muted text-uppercase fs-8 ls-1'>Crafted</span>
@@ -44,14 +44,14 @@ export function AsideMenuMain() {
           <AsideMenuItem
             to='/crafted/pages/profile/connections'
             title='Connections'
-            hasBullet={true} children={undefined}          />
+            hasBullet={true} children={undefined} />
         </AsideMenuItemWithSub>
 
         <AsideMenuItemWithSub to='/crafted/pages/wizards' title='Wizards' hasBullet={true}>
           <AsideMenuItem
             to='/crafted/pages/wizards/horizontal'
             title='Horizontal'
-            hasBullet={true} children={undefined}          />
+            hasBullet={true} children={undefined} />
           <AsideMenuItem to='/crafted/pages/wizards/vertical' title='Vertical' hasBullet={true} children={undefined} />
         </AsideMenuItemWithSub>
       </AsideMenuItemWithSub>
@@ -110,12 +110,12 @@ export function AsideMenuMain() {
         <a
           target='_blank'
           className='menu-link'
-          href={process.env.REACT_APP_PREVIEW_DOCS_URL + '/docs/changelog'}
+          href={process.env.NEXT_PUBLIC_PREVIEW_DOCS_URL + '/docs/changelog'}
         >
           <span className='menu-icon'>
             <KTSVG path='/media/icons/duotune/general/gen005.svg' className='svg-icon-2' />
           </span>
-          <span className='menu-title'>Changelog {process.env.REACT_APP_VERSION}</span>
+          <span className='menu-title'>Changelog {process.env.NEXT_PUBLIC_VERSION}</span>
         </a>
       </div>
     </>

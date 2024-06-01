@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {FC} from 'react'
-import {KTSVG} from '../../../../../theme/helpers'
-import {Link} from 'react-router-dom'
+import React, { FC } from 'react'
+import { KTSVG } from '../../../../theme/helpers'
+import Link from 'next/link'
 
 const Step5: FC = () => {
   return (
@@ -11,7 +11,7 @@ const Step5: FC = () => {
 
         <div className='text-gray-400 fw-bold fs-6'>
           If you need more info, please
-          <Link to='/auth/login' className='link-primary fw-bolder'>
+          <Link href='/auth/login' className='link-primary fw-bolder'>
             {' '}
             Sign In
           </Link>
@@ -49,4 +49,4 @@ const Step5: FC = () => {
   )
 }
 
-export {Step5}
+export { Step5 }

@@ -2,8 +2,7 @@ import axios ,  { AxiosPromise } from 'axios'
 import {AuthModel} from '../models/AuthModel'
 import {UserModel} from '../models/UserModel'
 
-const API_URL = process.env.REACT_APP_API_URL
-
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 export const GET_USER_BY_ACCESSTOKEN_URL = `${API_URL}/user/fetch_user_details`
 export const LOGIN_URL = `${API_URL}/auth/users/sign_in`
 export const REGISTER_URL = `${API_URL}/auth/users`

@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
-import {Link} from 'react-router-dom'
 import {useLayout} from '../../../core/LayoutProvider'
 import {usePageData} from '../../../core/PageData'
+import Link from 'next/link'
 
 const DefaultTitle: FC = () => {
   const {pageTitle, pageDescription, pageBreadcrumbs} = usePageData()
@@ -30,7 +30,7 @@ const DefaultTitle: FC = () => {
             {Array.from(pageBreadcrumbs).map((item, index) => (
               <li className={'breadcrumb-item text-white opacity-75'} key={`${item.path}${index}`}>
                 {!item.isSeparator ? (
-                  <Link className='text-white text-hover-primary' to={item.path}>
+                  <Link className='text-white text-hover-primary' href={item.path}>
                     {item.title}
                   </Link>
                 ) : (

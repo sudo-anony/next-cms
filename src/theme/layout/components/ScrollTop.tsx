@@ -1,15 +1,15 @@
-import React, {useEffect, useRef} from 'react'
-import {useLocation} from 'react-router-dom'
+import React, { useEffect, useRef } from 'react'
 import {
   ScrollTopComponent,
   DrawerComponent,
   ToggleComponent,
   StickyComponent,
 } from '../../assets/ts/components'
-import {KTSVG} from '../../helpers'
+import { KTSVG } from '../../helpers'
+import { useRouter } from 'next/router'
 
 export function ScrollTop() {
-  const {pathname} = useLocation()
+  const { pathname } = useRouter()
   const isFirstRun = useRef(true)
 
   const pluginsReinitialization = () => {

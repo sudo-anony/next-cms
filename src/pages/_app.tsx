@@ -6,7 +6,6 @@ import store, { persistor } from '../setup/redux/Store';
 import '../theme/assets/sass/style.scss';
 import '../theme/assets/sass/style.react.scss';
 import App from '@/component/App';
-debugger
 const MyApp = ({ Component, pageProps }: AppProps) => {
     return (
         <GoogleOAuthProvider clientId='your-client-id'>

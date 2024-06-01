@@ -1,4 +1,4 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import {
   ChartsWidget1,
   ChartsWidget2,
@@ -8,7 +8,7 @@ import {
   ChartsWidget6,
   ChartsWidget7,
   ChartsWidget8,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 const Charts: FC = () => {
   return (
@@ -60,4 +60,4 @@ const Charts: FC = () => {
   )
 }
 
-export {Charts}
+export { Charts }

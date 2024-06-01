@@ -17,7 +17,7 @@ import dayjs from 'dayjs';
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDispatch } from 'react-redux';
 import { actions } from '../redux/ExamRedux';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 dayjs.extend(relativeTime);
 
 interface Column {
@@ -76,7 +76,7 @@ const fetchData = async (page: number, rowsPerPage: number): Promise<{ data: Dat
 
 export default function AllConfidentialExams() {
     const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const navigate = useRouter();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
     const [data, setData] = React.useState<Data[]>([]);
@@ -166,7 +166,7 @@ export default function AllConfidentialExams() {
         const { exam, quiz, questions } = response.data;
         const completeExam = { exam, quiz, questions };
         dispatch(actions.setExam(completeExam));
-        navigate('/exam-attemption/quick-exam', { replace: true });
+        navigate.push('/exam-attemption/quick-exam');
     };
 
     const memoizedRemainingTime = React.useMemo(() => getRemainingTime, [getRemainingTime]);

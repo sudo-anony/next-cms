@@ -1,4 +1,4 @@
-import {PageLink} from '../../../theme/layout/core'
+import {PageLink} from '../../theme/layout/core'
 
 export const profileSubmenu: Array<PageLink> = [
   {

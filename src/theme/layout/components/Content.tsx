@@ -1,15 +1,15 @@
 import React, { FC, ReactNode, useEffect } from 'react';
-import { useLocation } from 'react-router';
 import clsx from 'clsx';
 import { DrawerComponent } from '../../assets/ts/components';
+import { useRouter } from 'next/router';
 
 type ContentProps = {
   children: ReactNode;
 };
 
 const Content: FC<ContentProps> = ({ children }) => {
-  const location = useLocation();
-  const paths = process.env.REACT_APP_HIDE_LAYOUT_URLS ? process.env.REACT_APP_HIDE_LAYOUT_URLS.split(',') : [];
+  const location = useRouter();;
+  const paths = process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS ? process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS.split(',') : [];
   const startExam = paths.includes(location.pathname);
 
   useEffect(() => {
@@ -17,8 +17,8 @@ const Content: FC<ContentProps> = ({ children }) => {
   }, [location]);
 
   return (
-    <div 
-      id="kt_content_container" 
+    <div
+      id="kt_content_container"
       className={clsx('content flex-row-fluid', {
         'container-fulldui': startExam,
         'container': !startExam

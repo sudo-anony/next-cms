@@ -1,6 +1,6 @@
 import React, { FC, createContext, useContext, ReactNode } from 'react';
 
-const I18N_CONFIG_KEY = process.env.REACT_APP_I18N_CONFIG_KEY || 'i18nConfig';
+const I18N_CONFIG_KEY = process.env.NEXT_PUBLIC_I18N_CONFIG_KEY || 'i18nConfig';
 
 type Lang = 'de' | 'en' | 'es' | 'fr' | 'ja' | 'zh';
 

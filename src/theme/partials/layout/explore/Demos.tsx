@@ -1,5 +1,5 @@
-import React, {FC} from 'react'
-import {toAbsoluteUrl} from '../../../helpers'
+import React, { FC } from 'react'
+import { toAbsoluteUrl } from '../../../helpers'
 
 const Demos: FC = () => {
   const demos = [
@@ -48,17 +48,16 @@ const Demos: FC = () => {
 
   return (
     <div className='mb-0'>
-      <h3 className='fw-bolder text-center mb-6'>{process.env.REACT_APP_THEME_NAME} Demos</h3>
+      <h3 className='fw-bolder text-center mb-6'>{process.env.NEXT_PUBLIC_THEME_NAME} Demos</h3>
 
       <div className='row g-5'>
         {demos.map((item, index) => (
           <div className='col-6' key={index}>
             <div
-              className={`overlay overflow-hidden position-relative ${
-                process.env.REACT_APP_THEME_DEMO === item.name
+              className={`overlay overflow-hidden position-relative ${process.env.NEXT_PUBLIC_THEME_DEMO === item.name
                   ? 'border border-4 border-success'
                   : 'border border-4 border-gray-200'
-              } rounded`}
+                } rounded`}
             >
               <div className='overlay-wrapper'>
                 <img
@@ -71,7 +70,7 @@ const Demos: FC = () => {
               <div className='overlay-layer bg-dark bg-opacity-10'>
                 {item.available && (
                   <a
-                    href={`${process.env.REACT_APP_PREVIEW_REACT_URL}/${item.name}`}
+                    href={`${process.env.NEXT_PUBLIC_PREVIEW_REACT_URL}/${item.name}`}
                     className='btn btn-sm btn-success shadow'
                   >
                     {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
@@ -91,4 +90,4 @@ const Demos: FC = () => {
   )
 }
 
-export {Demos}
+export { Demos }

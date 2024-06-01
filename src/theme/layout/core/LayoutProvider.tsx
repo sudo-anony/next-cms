@@ -47,7 +47,6 @@ type LanguagesProps = {
 }
 
 const LayoutProvider: React.FC<LanguagesProps> = ({ children }) => {
-  debugger
   const [config, setConfig] = useState(LayoutSetup.config)
   const [classes, setClasses] = useState(LayoutSetup.classes)
   const [attributes, setAttributes] = useState(LayoutSetup.attributes)

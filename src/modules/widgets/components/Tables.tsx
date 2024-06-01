@@ -13,7 +13,7 @@ import {
   TablesWidget11,
   TablesWidget12,
   TablesWidget13,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 const Tables: FC = () => {
   return (

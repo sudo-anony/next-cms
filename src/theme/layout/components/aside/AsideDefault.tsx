@@ -1,19 +1,19 @@
 /* eslint-disable react/jsx-no-target-blank */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import clsx from 'clsx'
-import {useLayout} from '../../core'
-import {KTSVG} from '../../../helpers'
-import {AsideMenu} from './AsideMenu'
+import { useLayout } from '../../core'
+import { KTSVG } from '../../../helpers'
+import { AsideMenu } from './AsideMenu'
 
 const AsideDefault: FC = () => {
-  const {config, classes} = useLayout()
-  const {aside} = config
+  const { config, classes } = useLayout()
+  const { aside } = config
 
   return (
     <div
       id='kt_aside'
-      className={clsx('aside card', classes.aside.join(' '), {'d-none': !aside.display})}
+      className={clsx('aside card', classes.aside.join(' '), { 'd-none': !aside.display })}
       data-kt-drawer='true'
       data-kt-drawer-name='aside'
       data-kt-drawer-activate='{default: true, lg: false}'
@@ -33,7 +33,7 @@ const AsideDefault: FC = () => {
         <a
           target='_blank'
           className='btn btn-custom btn-primary w-100'
-          href={process.env.REACT_APP_PREVIEW_DOCS_URL}
+          href={process.env.NEXT_PUBLIC_PREVIEW_DOCS_URL}
           data-bs-toggle='tooltip'
           data-bs-trigger='hover'
           data-bs-dismiss-='click'
@@ -50,4 +50,4 @@ const AsideDefault: FC = () => {
   )
 }
 
-export {AsideDefault}
+export { AsideDefault }

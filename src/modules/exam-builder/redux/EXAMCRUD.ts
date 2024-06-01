@@ -2,7 +2,7 @@ import axios ,  { AxiosPromise } from 'axios'
 import { PossibleAnswer , QuestionDiscussion } from '../models/models'
 import { UserModel } from '../../auth/models/UserModel'
 
-const API_URL = process.env.REACT_APP_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 export const GET_EXAM_BY_ACCESSTOKEN = `${API_URL}/explorer/quick_exams/`
 export const FETCH_POSSIBLE_ANSWERS_URL = `${API_URL}/explorer/quick_exams/fetch_possible_answers`
 export const  FETCH_QUESTION_DISCUSSIONS = `${API_URL}/explorer/quick_exams/fetch_question_discussion`

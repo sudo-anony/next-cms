@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../theme/helpers'
-import {Link} from 'react-router-dom'
-import {Dropdown1} from '../../../theme/partials'
-import {useLocation} from 'react-router'
+import { KTSVG, toAbsoluteUrl } from '../../theme/helpers'
+import Link from 'next/link';
+import { Dropdown1 } from '@/theme/partials'
+import { useRouter } from 'next/router';
 
 const AccountHeader: React.FC = () => {
-  const location = useLocation()
+  const location = useRouter();
 
   return (
     <div className='card mb-5 mb-xl-10'>
@@ -161,7 +161,7 @@ const AccountHeader: React.FC = () => {
                   <div
                     className='bg-success rounded h-5px'
                     role='progressbar'
-                    style={{width: '50%'}}
+                    style={{ width: '50%' }}
                   ></div>
                 </div>
               </div>
@@ -177,7 +177,7 @@ const AccountHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/account/overview' && 'active')
                 }
-                to='/crafted/account/overview'
+                href='/crafted/account/overview'
               >
                 Overview
               </Link>
@@ -188,7 +188,7 @@ const AccountHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/account/settings' && 'active')
                 }
-                to='/crafted/account/settings'
+                href='/crafted/account/settings'
               >
                 Settings
               </Link>
@@ -200,4 +200,4 @@ const AccountHeader: React.FC = () => {
   )
 }
 
-export {AccountHeader}
+export { AccountHeader }

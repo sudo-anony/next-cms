@@ -6,7 +6,7 @@ import {
   StatisticsWidget4,
   StatisticsWidget5,
   StatisticsWidget6,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 const Statistics: FC = () => {
   return (

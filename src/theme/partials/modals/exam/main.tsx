@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { KTSVG } from '../../../helpers';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import * as examCrud from '../../../../modules/exam-builder/redux/EXAMCRUD';
-import { useDispatch, useSelector } from 'react-redux';
-import { actions, IExamState } from '../../../../modules/exam-builder/redux/ExamRedux';
-import { RootState } from '../../../../setup';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { actions } from '../../../../modules/exam-builder/redux/ExamRedux';
 import { Modal } from 'react-bootstrap';
+import { useRouter } from 'next/router';
 
 interface ExamBuilder {
     token: string;
@@ -27,7 +26,7 @@ const createAppSchema = Yup.object({
 });
 
 const ExamMain: React.FC<Props> = ({ show, handleClose }) => {
-    const navigate = useNavigate();
+    const redirect = useRouter();
     const dispatch = useDispatch();
     const fetch_exam_token = async (values: ExamBuilder, formikActions: any) => {
         try {
@@ -39,7 +38,7 @@ const ExamMain: React.FC<Props> = ({ show, handleClose }) => {
             dispatch(actions.setExam(completeExam));
             dispatch(actions.setExamModulePath("ALI"));
             handleClose();
-            navigate('/exam-attemption/quick-exam', { replace: true });
+            redirect.push('/exam-attemption/quick-exam');
         } catch (error) {
             console.error('Error fetching exam token:', error);
         } finally {

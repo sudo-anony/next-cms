@@ -1,12 +1,12 @@
-import React, { useEffect, ReactNode, FC } from 'react'
-import { AsideDefault } from './components/aside/AsideDefault'
-import { Footer } from './components/Footer'
-import { HeaderWrapper } from './components/header/HeaderWrapper'
-import { Toolbar } from './components/toolbar/Toolbar'
-import { ScrollTop } from './components/ScrollTop'
-import { Content } from './components/Content'
-import { PageDataProvider, useLayout } from './core'
-import { useLocation } from 'react-router-dom'
+import React, { useEffect, ReactNode, FC } from 'react';
+import { useRouter } from 'next/router';
+import { AsideDefault } from './components/aside/AsideDefault';
+import { Footer } from './components/Footer';
+import { HeaderWrapper } from './components/header/HeaderWrapper';
+import { Toolbar } from './components/toolbar/Toolbar';
+import { ScrollTop } from './components/ScrollTop';
+import { Content } from './components/Content';
+import { PageDataProvider, useLayout } from './core';
 import {
   DrawerMessenger,
   ExploreMain,
@@ -14,52 +14,53 @@ import {
   Main,
   InviteUsers,
   UpgradePlan,
-} from '../partials'
-import { MenuComponent } from '../../theme/assets/ts/components'
-import clsx from 'clsx'
+} from '../partials';
+import { MenuComponent } from '../../theme/assets/ts/components';
+import clsx from 'clsx';
+
 type MasterLayoutProps = {
   children?: ReactNode;
 };
 
-
 const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
-
-  const { classes } = useLayout()
-  const location = useLocation()
-  const paths = process.env.REACT_APP_HIDE_LAYOUT_URLS ? process.env.REACT_APP_HIDE_LAYOUT_URLS.split(',') : [];
-  const startExam = paths.includes(location.pathname)
-  useEffect(() => {
-    setTimeout(() => {
-      MenuComponent.reinitialization()
-    }, 500)
-  }, [])
+  const { classes } = useLayout();
+  const router = useRouter();
+  const paths = process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS ? process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS.split(',') : [];
+  const startExam = paths.includes(router.pathname);
 
   useEffect(() => {
     setTimeout(() => {
-      MenuComponent.reinitialization()
-    }, 500)
-  }, [location.key])
+      MenuComponent.reinitialization();
+    }, 500);
+  }, []);
+
+  useEffect(() => {
+    setTimeout(() => {
+      MenuComponent.reinitialization();
+    }, 500);
+  }, [router.pathname]);
 
   return (
     <PageDataProvider>
-      {!startExam && (<div className='container page d-flex flex-row flex-column-fluid'>
-        <div className='wrapper d-flex flex-column flex-row-fluid' id='kt_wrapper'>
-          <HeaderWrapper />
+      {!startExam && (
+        <div className='container page d-flex flex-row flex-column-fluid'>
+          <div className='wrapper d-flex flex-column flex-row-fluid' id='kt_wrapper'>
+            <HeaderWrapper />
 
-          <div id='kt_content' className='content d-flex flex-column flex-column-fluid'>
-            <Toolbar />
-            <div
-              className={clsx(
-                'd-flex flex-column-fluid align-items-start',
-                classes.contentContainer.join(' ')
-              )}
-              id='kt_post'
-            >
+            <div id='kt_content' className='content d-flex flex-column flex-column-fluid'>
+              <Toolbar />
+              <div
+                className={clsx(
+                  'd-flex flex-column-fluid align-items-start',
+                  classes.contentContainer.join(' ')
+                )}
+                id='kt_post'
+              ></div>
             </div>
+            <Footer />
           </div>
-          <Footer />
         </div>
-      </div>)}
+      )}
 
       <AsideDefault />
       <Content>{children}</Content>
@@ -76,7 +77,7 @@ const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
       {/* end:: Modals */}
       <ScrollTop />
     </PageDataProvider>
-  )
-}
+  );
+};
 
-export { MasterLayout }
+export { MasterLayout };

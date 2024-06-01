@@ -1,7 +1,7 @@
 import React from 'react'
 import { Error500 } from './components/Error500'
 import { Error404 } from './components/Error404'
-import { toAbsoluteUrl } from '../../../theme/helpers'
+import { toAbsoluteUrl } from '../../theme/helpers'
 
 const ErrorsPage: React.FC = () => {
   const handleRedirectToDashboard = () => {

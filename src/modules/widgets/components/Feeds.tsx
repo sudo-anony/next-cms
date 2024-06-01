@@ -1,11 +1,11 @@
-import React, {FC} from 'react'
+import React, { FC } from 'react'
 import {
   FeedsWidget2,
   FeedsWidget3,
   FeedsWidget4,
   FeedsWidget5,
   FeedsWidget6,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 const Feeds: FC = () => {
   return (
@@ -31,4 +31,4 @@ const Feeds: FC = () => {
   )
 }
 
-export {Feeds}
+export { Feeds }

@@ -11,7 +11,6 @@ type PropsFromRedux = ConnectedProps<typeof connector> & {
   children: any
 }
 const AuthInit: FC<PropsFromRedux> = (props) => {
-  debugger
   const didRequest = useRef(false)
   const dispatch = useDispatch()
   const [showSplashScreen, setShowSplashScreen] = useState(true)

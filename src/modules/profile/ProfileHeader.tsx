@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
 import { KTSVG, toAbsoluteUrl } from '../../theme/helpers'
-import { Link } from 'react-router-dom'
+import Link from 'next/link';
 import { Dropdown1 } from '../../theme/partials'
-import { useLocation } from 'react-router-dom'
+import { useRouter } from 'next/router';
 
 const ProfileHeader: React.FC = () => {
-  const location = useLocation()
+  const location = useRouter();
 
   return (
     <div className='card mb-5 mb-xl-10'>
@@ -169,7 +169,7 @@ const ProfileHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/pages/profile/overview' && 'active')
                 }
-                to='/crafted/pages/profile/overview'
+                href='/crafted/pages/profile/overview'
               >
                 Overview
               </Link>
@@ -180,7 +180,7 @@ const ProfileHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/pages/profile/projects' && 'active')
                 }
-                to='/crafted/pages/profile/projects'
+                href='/crafted/pages/profile/projects'
               >
                 Projects
               </Link>
@@ -191,7 +191,7 @@ const ProfileHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/pages/profile/campaigns' && 'active')
                 }
-                to='/crafted/pages/profile/campaigns'
+                href='/crafted/pages/profile/campaigns'
               >
                 Campaigns
               </Link>
@@ -202,7 +202,7 @@ const ProfileHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/pages/profile/documents' && 'active')
                 }
-                to='/crafted/pages/profile/documents'
+                href='/crafted/pages/profile/documents'
               >
                 Documents
               </Link>
@@ -213,7 +213,7 @@ const ProfileHeader: React.FC = () => {
                   `nav-link text-active-primary me-6 ` +
                   (location.pathname === '/crafted/pages/profile/connections' && 'active')
                 }
-                to='/crafted/pages/profile/connections'
+                href='/crafted/pages/profile/connections'
               >
                 Connections
               </Link>

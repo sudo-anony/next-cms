@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {ReactNode, useEffect, useRef} from 'react'
-import {Modal} from 'react-bootstrap'
-import {Link, useLocation} from 'react-router-dom'
-import {KTSVG, toAbsoluteUrl} from '../../helpers'
+import React, { ReactNode, useEffect, useRef } from 'react'
+import { Modal } from 'react-bootstrap'
+import { KTSVG, toAbsoluteUrl } from '../../helpers'
+import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 type Props = {
   show: boolean
@@ -11,8 +12,8 @@ type Props = {
   children: ReactNode
 }
 
-const MenuModal: React.FC<Props> = ({show, handleClose, children}) => {
-  const location = useLocation()
+const MenuModal: React.FC<Props> = ({ show, handleClose, children }) => {
+  const location = useRouter();
   const isFirstRef = useRef(true)
   useEffect(() => {
     if (isFirstRef.current) {
@@ -36,7 +37,7 @@ const MenuModal: React.FC<Props> = ({show, handleClose, children}) => {
         <div className='modal-header d-flex align-items-center justify-content-between border-0'>
           <div className='d-flex align-items-center'>
             {/* begin::Logo */}
-            <Link to='/'>
+            <Link href='/'>
               <img
                 alt='logo'
                 className='h-30px'
@@ -174,4 +175,4 @@ const MenuModal: React.FC<Props> = ({show, handleClose, children}) => {
   )
 }
 
-export {MenuModal}
+export { MenuModal }

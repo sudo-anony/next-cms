@@ -6,8 +6,9 @@ import * as Yup from 'yup'
 import clsx from 'clsx'
 import * as auth from '../redux/AuthRedux'
 import { register } from '../redux/AuthCRUD'
-import { Link, useNavigate } from 'react-router-dom'
 import { toAbsoluteUrl } from '@/theme/helpers'
+import Link from 'next/link'
+import { useRouter } from 'next/router';
 
 const initialValues = {
   firstname: '',
@@ -47,7 +48,7 @@ const registrationSchema = Yup.object().shape({
 
 
 export function Registration() {
-  const navigate = useNavigate();
+  const navigate = useRouter();
   const [loading, setLoading] = useState(false)
   const formik = useFormik({
     initialValues,
@@ -60,7 +61,7 @@ export function Registration() {
             setStatus(res.message);
             setLoading(false);
             setTimeout(() => {
-              navigate('/auth/login');
+              navigate.push('/auth/login');
             }, 4000);
           })
           .catch((res) => {
@@ -88,7 +89,7 @@ export function Registration() {
         {/* begin::Link */}
         <div className='text-gray-400 fw-bold fs-4'>
           Already have an account?
-          <Link to='/auth/login' className='link-primary fw-bolder' style={{ marginLeft: '5px' }}>
+          <Link href='/auth/login' className='link-primary fw-bolder' style={{ marginLeft: '5px' }}>
             Login
           </Link>
         </div>
@@ -278,10 +279,10 @@ export function Registration() {
             htmlFor='kt_login_toc_agree'
           >
             I Agree the{' '}
-            <Link to='/auth/terms' className='ms-1 link-primary'>
+            <Link href='/auth/terms' className='ms-1 link-primary'>
               terms and conditions
             </Link>
-            .
+
           </label>
           {formik.touched.acceptTerms && formik.errors.acceptTerms && (
             <div className='fv-plugins-message-container'>
@@ -310,7 +311,7 @@ export function Registration() {
             </span>
           )}
         </button>
-        <Link to='/auth/login'>
+        <Link href='/auth/login'>
           <button
             type='button'
             id='kt_login_signup_form_cancel_button'

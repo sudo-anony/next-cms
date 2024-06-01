@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, {useState, useEffect, useRef} from 'react'
-import {CopyToClipboard} from 'react-copy-to-clipboard'
-import {Highlight, Language, themes} from 'prism-react-renderer'
-import {OverlayTrigger, Tooltip} from 'react-bootstrap'
+import React, { useState, useEffect, useRef } from 'react'
+// import {CopyToClipboard} from 'react-copy-to-clipboard'
+import { Highlight, Language, themes } from 'prism-react-renderer'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 type Props = {
   code: string
   language: Language
 }
 
-const CodeBlock: React.FC<Props> = ({code, language}) => {
+const CodeBlock: React.FC<Props> = ({ code, language }) => {
   const codeRef = useRef<HTMLDivElement | null>(null)
   const [copied, setCopied] = useState(false)
   useEffect(() => {
@@ -42,20 +42,20 @@ const CodeBlock: React.FC<Props> = ({code, language}) => {
           placement='top'
           overlay={<Tooltip id='tooltip-copy-to-clipboard'>Copy Code</Tooltip>}
         >
-          <CopyToClipboard text={code} onCopy={() => setCopied(true)}>
-            <a className='highlight-copy btn'>{copied ? 'copied' : 'copy'}</a>
-          </CopyToClipboard>
+          {/* <CopyToClipboard text={code} onCopy={() => setCopied(true)}> */}
+          <a className='highlight-copy btn'>{copied ? 'copied' : 'copy'}</a>
+          {/* </CopyToClipboard> */}
         </OverlayTrigger>
 
         <div className='highlight-code' ref={codeRef}>
           <Highlight theme={themes.shadesOfPurple} code={code} language={language}>
-            {({className, style, tokens, getLineProps, getTokenProps}) => {
+            {({ className, style, tokens, getLineProps, getTokenProps }) => {
               return (
-                <pre className={className} style={{maxHeight: '300px', ...style}}>
+                <pre className={className} style={{ maxHeight: '300px', ...style }}>
                   {tokens.map((line: any[], i: any) => (
-                    <div {...getLineProps({line, key: i})}>
+                    <div {...getLineProps({ line, key: i })}>
                       {line.map((token: any, key: any) => (
-                        <span {...getTokenProps({token, key})} />
+                        <span {...getTokenProps({ token, key })} />
                       ))}
                     </div>
                   ))}
@@ -69,4 +69,4 @@ const CodeBlock: React.FC<Props> = ({code, language}) => {
   )
 }
 
-export {CodeBlock}
+export { CodeBlock }

@@ -1,8 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {useLocation} from 'react-router'
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import clsx from 'clsx'
-import {checkIsActive, KTSVG} from '../../../helpers'
+import { checkIsActive, KTSVG } from '../../../helpers'
 
 type Props = {
   to: string
@@ -21,7 +21,7 @@ const MenuItem: React.FC<Props> = ({
   hasArrow = false,
   hasBullet = false,
 }) => {
-  const {pathname} = useLocation()
+  const { pathname } = useRouter()
 
   return (
     <div className='menu-item me-lg-1'>
@@ -29,7 +29,7 @@ const MenuItem: React.FC<Props> = ({
         className={clsx('menu-link py-3', {
           active: checkIsActive(pathname, to),
         })}
-        to={to}
+        href={to}
       >
         {hasBullet && (
           <span className='menu-bullet'>
@@ -57,4 +57,4 @@ const MenuItem: React.FC<Props> = ({
   )
 }
 
-export {MenuItem}
+export { MenuItem }

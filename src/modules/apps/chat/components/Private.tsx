@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, {FC} from 'react'
-import {KTSVG, toAbsoluteUrl} from '../../../../../theme/helpers'
-import {Dropdown1, ChatInner} from '../../../../../theme/partials'
+import {KTSVG, toAbsoluteUrl} from '../../../../theme/helpers'
+import {Dropdown1, ChatInner} from '../../../../theme/partials'
 
 const Private: FC = () => {
   return (

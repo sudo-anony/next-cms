@@ -13,7 +13,7 @@ import {
 import { toAbsoluteUrl } from '../../helpers';
 import { DefaultLayoutConfig } from './DefaultLayoutConfig';
 
-const LAYOUT_CONFIG_KEY = process.env.REACT_APP_BASE_LAYOUT_CONFIG_KEY || 'LayoutConfig';
+const LAYOUT_CONFIG_KEY = process.env.NEXT_PUBLIC_BASE_LAYOUT_CONFIG_KEY || 'LayoutConfig';
 
 export function getLayout(): ILayout {
   if (typeof window !== 'undefined') {

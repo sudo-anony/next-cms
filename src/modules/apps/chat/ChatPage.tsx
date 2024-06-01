@@ -1,9 +1,10 @@
 import React from 'react';
-import { useLocation, Navigate } from 'react-router-dom';
-import { PageTitle } from '../../../../theme/layout/core';
+import { PageTitle } from '../../../theme/layout/core';
 import { Private } from './components/Private';
 import { Group } from './components/Group';
 import { Drawer } from './components/Drawer';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 const chatBreadCrumbs = [
   {
@@ -21,11 +22,12 @@ const chatBreadCrumbs = [
 ];
 
 const ChatPage: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname, push } = useRouter();
   const isChatRoute = pathname.startsWith('/apps/chat');
 
   if (!isChatRoute) {
-    return <Navigate to='/apps/chat/private-chat' replace />;
+    push('/apps/chat/private-chat');
+    return null;
   }
 
   let pageTitle = '';

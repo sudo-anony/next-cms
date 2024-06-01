@@ -1,13 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react'
-import {Link} from 'react-router-dom'
-import {KTSVG} from '../../../../theme/helpers'
+import Link from 'next/link';
+import { KTSVG } from '../../../theme/helpers'
 import {
   ChartsWidget1,
   TablesWidget1,
   ListsWidget5,
   TablesWidget5,
-} from '../../../../theme/partials/widgets'
+} from '../../../theme/partials/widgets'
 
 export function Overview() {
   return (
@@ -18,7 +18,7 @@ export function Overview() {
             <h3 className='fw-bolder m-0'>Profile Details</h3>
           </div>
 
-          <Link to='/crafted/account/settings' className='btn btn-primary align-self-center'>
+          <Link href='/crafted/account/settings' className='btn btn-primary align-self-center'>
             Edit Profile
           </Link>
         </div>
@@ -108,7 +108,7 @@ export function Overview() {
                 <h4 className='text-gray-800 fw-bolder'>We need your attention!</h4>
                 <div className='fs-6 text-gray-600'>
                   Your payment was declined. To start using tools, please
-                  <Link className='fw-bolder' to='/crafted/account/settings'>
+                  <Link className='fw-bolder' href='/crafted/account/settings'>
                     {' '}
                     Add Payment Method
                   </Link>

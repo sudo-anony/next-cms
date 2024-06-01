@@ -1,13 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import * as Yup from 'yup'
-import clsx from 'clsx'
-import { Link, Navigate } from 'react-router-dom'
-import { useFormik } from 'formik'
-import * as auth from '../redux/AuthRedux'
-import { login } from '../redux/AuthCRUD'
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import * as Yup from 'yup';
+import clsx from 'clsx';
+import { useRouter } from 'next/router';
+import { useFormik } from 'formik';
+import * as auth from '../redux/AuthRedux';
+import { login } from '../redux/AuthCRUD';
 import { GoogleLogin, CredentialResponse } from '@react-oauth/google';
+import Link from 'next/link';
+
 const responseMessage = (response: CredentialResponse) => {
   console.log(response);
 };
@@ -26,16 +28,18 @@ const loginSchema = Yup.object().shape({
     .min(7, 'Minimum 7 symbols')
     .max(50, 'Maximum 50 symbols')
     .required('Password is required'),
-})
+});
 
 const initialValues = {
   email: 'admin@demo.com',
   password: 'demo',
-}
+};
 
 export function Login() {
-  const [loading, setLoading] = useState(false)
-  const dispatch = useDispatch()
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
+
   const formik = useFormik({
     initialValues,
     validationSchema: loginSchema,
@@ -43,23 +47,23 @@ export function Login() {
       const formData = new FormData();
       formData.append('user[email]', values.email);
       formData.append('user[password]', values.password);
-      setLoading(true)
+      setLoading(true);
       setTimeout(() => {
         login(formData)
           .then(({ data }) => {
             const accessToken = data.data.token;
             setLoading(false);
             dispatch(auth.actions.login(accessToken));
-            return <Navigate to="/dashboard" />;
+            router.push('/dashboard');
           })
           .catch(() => {
-            setLoading(false)
-            setSubmitting(false)
-            setStatus('The login detail is incorrect')
-          })
-      }, 50)
+            setLoading(false);
+            setSubmitting(false);
+            setStatus('The login detail is incorrect');
+          });
+      }, 50);
     },
-  })
+  });
 
   return (
     <form
@@ -72,9 +76,10 @@ export function Login() {
         <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
         <div className='text-gray-400 fw-bold fs-4'>
           New Here?{' '}
-          {/* <Link to='/auth/registration' className='link-primary fw-bolder'>
-            Create an Account
-          </Link> */}
+          {/* Replace with Next.js Link if needed */}
+          <Link href='/auth/registration'>
+            <a className='link-primary fw-bolder'>Create an Account</a>
+          </Link>
         </div>
       </div>
       {formik.status ? (
@@ -115,12 +120,11 @@ export function Login() {
         <div className='d-flex justify-content-between mt-n5'>
           <div className='d-flex flex-stack mb-2'>
             <label className='form-label fw-bolder text-dark fs-6 mb-0'>Password</label>
-            {/* <Link
-              to='/auth/forgot-password'
-              className='link-primary fs-6 fw-bolder'
-              style={{ marginLeft: '5px' }}
-            >
-              Forgot Password ?
+            {/* Replace with Next.js Link if needed */}
+            {/* <Link href='/auth/forgot-password'>
+              <a className='link-primary fs-6 fw-bolder' style={{ marginLeft: '5px' }}>
+                Forgot Password ?
+              </a>
             </Link> */}
           </div>
         </div>
@@ -165,5 +169,5 @@ export function Login() {
         <GoogleLogin onSuccess={responseMessage} onError={errorMessage} />
       </div>
     </form>
-  )
+  );
 }

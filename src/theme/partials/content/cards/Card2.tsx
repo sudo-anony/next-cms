@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import {FC} from 'react'
-import {Link} from 'react-router-dom'
+import { FC } from 'react'
 import { IconUserModel } from '@/modules/profile/ProfileModels'
 import { UsersList } from '@/modules/profile/components/UsersList'
-import {toAbsoluteUrl} from '../../../helpers'
-
+import { toAbsoluteUrl } from '../../../helpers'
+import Link from 'next/link'
 type Props = {
   icon: string
   badgeColor: string
@@ -32,7 +31,7 @@ const Card2: FC<Props> = ({
 }) => {
   return (
     <Link
-      to='/crafted/pages/profile/overview'
+      href='/crafted/pages/profile/overview'
       className='card border border-2 border-gray-300 border-hover'
     >
       <div className='card-header border-0 pt-9'>
@@ -74,7 +73,7 @@ const Card2: FC<Props> = ({
           <div
             className={`bg-${statusColor} rounded h-4px`}
             role='progressbar'
-            style={{width: `${progress}%`}}
+            style={{ width: `${progress}%` }}
           ></div>
         </div>
 
@@ -84,4 +83,4 @@ const Card2: FC<Props> = ({
   )
 }
 
-export {Card2}
+export { Card2 }

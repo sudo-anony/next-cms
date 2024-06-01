@@ -1,14 +1,13 @@
 import clsx from 'clsx'
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
 import { KTSVG, toAbsoluteUrl } from '../../../helpers'
 import { useLayout } from '../../core'
 import { Header } from './Header'
 import { DefaultTitle } from './page-title/DefaultTitle'
 import { Topbar } from './Topbar'
+import Link from 'next/link'
 
 export function HeaderWrapper() {
-  debugger
   const { config, classes, attributes } = useLayout()
   const { header, aside } = config
 
@@ -48,7 +47,7 @@ export function HeaderWrapper() {
         </div>
 
         <div className='header-logo me-5 me-md-10 flex-grow-1 flex-lg-grow-0'>
-          <Link to='/'>
+          <Link href='/'>
             <img
               alt='Logo'
               src={toAbsoluteUrl('/media/logos/logo-4.png')}

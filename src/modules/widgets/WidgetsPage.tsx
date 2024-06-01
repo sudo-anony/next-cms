@@ -1,6 +1,6 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { PageLink, PageTitle } from '../../../theme/layout/core';
+import { useRouter } from 'next/router';
+import { PageLink, PageTitle } from '../../theme/layout/core';
 import { Charts } from './components/Charts';
 import { Feeds } from './components/Feeds';
 import { Lists } from './components/Lists';
@@ -24,7 +24,7 @@ const widgetsBreadCrumbs: Array<PageLink> = [
 ];
 
 const WidgetsPage: React.FC = () => {
-  const { pathname } = useLocation();
+  const { pathname } = useRouter();
 
   let pageTitle = 'Unknown';
   let componentToRender: JSX.Element | null = null;

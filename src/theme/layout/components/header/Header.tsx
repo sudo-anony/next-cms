@@ -3,7 +3,6 @@ import { MenuInner } from './MenuInner'
 import { SwapperComponent } from '../../../assets/ts/components'
 
 const Header: FC = () => {
-  debugger
   useEffect(() => {
     SwapperComponent.reinitialization()
   }, [])

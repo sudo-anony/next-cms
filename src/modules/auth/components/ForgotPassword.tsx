@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import clsx from 'clsx'
-import {Link} from 'react-router-dom'
-import {useFormik} from 'formik'
-import {requestPassword} from '../redux/AuthCRUD'
+import Link from 'next/link'
+import { useFormik } from 'formik'
+import { requestPassword } from '../redux/AuthCRUD'
 
 const initialValues = {
   email: 'admin@demo.com',
@@ -23,12 +23,12 @@ export function ForgotPassword() {
   const formik = useFormik({
     initialValues,
     validationSchema: forgotPasswordSchema,
-    onSubmit: (values, {setStatus, setSubmitting}) => {
+    onSubmit: (values, { setStatus, setSubmitting }) => {
       setLoading(true)
       setHasErrors(undefined)
       setTimeout(() => {
         requestPassword(values.email)
-          .then(({data: {result}}) => {
+          .then(({ data: { result } }) => {
             setHasErrors(false)
             setLoading(false)
           })
@@ -86,7 +86,7 @@ export function ForgotPassword() {
             {...formik.getFieldProps('email')}
             className={clsx(
               'form-control form-control-lg form-control-solid',
-              {'is-invalid': formik.touched.email && formik.errors.email},
+              { 'is-invalid': formik.touched.email && formik.errors.email },
               {
                 'is-valid': formik.touched.email && !formik.errors.email,
               }
@@ -117,7 +117,7 @@ export function ForgotPassword() {
               </span>
             )}
           </button>
-          <Link to='/auth/login'>
+          <Link href='/auth/login'>
             <button
               type='button'
               id='kt_login_password_reset_form_cancel_button'

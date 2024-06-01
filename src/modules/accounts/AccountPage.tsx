@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { PageLink, PageTitle } from '../../../theme/layout/core';
+import { PageLink, PageTitle } from '../../theme/layout/core';
 import { Overview } from './components/Overview';
 import { Settings } from './components/settings/Settings';
 import { AccountHeader } from './AccountHeader';
+import { useRouter } from 'next/router';
 
 const accountBreadCrumbs: Array<PageLink> = [
   {
@@ -21,17 +21,16 @@ const accountBreadCrumbs: Array<PageLink> = [
 ];
 
 const AccountPage: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useRouter();
   const { pathname } = location;
 
   useEffect(() => {
     // Handle unauthorized access or other scenarios
     if (pathname === '/crafted/account/settings' && !isUserAllowedToAccessSettings()) {
       // Redirect the user to the overview page if not allowed to access settings
-      navigate('/crafted/account/overview', { replace: true });
+      location.push('/crafted/account/overview');
     }
-  }, [pathname, navigate]);
+  }, [pathname, location]);
 
   const isUserAllowedToAccessSettings = () => {
     // Add your logic here to check if the user is allowed to access settings
