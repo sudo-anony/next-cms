@@ -54,6 +54,7 @@ export function Login() {
             const accessToken = data.data.token;
             setLoading(false);
             dispatch(auth.actions.login(accessToken));
+            sessionStorage.setItem("token", accessToken);
             router.push('/dashboard');
           })
           .catch(() => {

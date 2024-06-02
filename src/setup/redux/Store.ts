@@ -15,7 +15,7 @@ const store = configureStore({
 
 export type AppDispatch = typeof store.dispatch;
 
-export const persistor = persistStore(store);
+// export const persistor = persistStore(store);
 
 sagaMiddleware.run(rootSaga);
 

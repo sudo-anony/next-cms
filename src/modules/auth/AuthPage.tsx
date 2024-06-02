@@ -16,7 +16,6 @@ export function AuthPage() {
 
   const renderComponent = () => {
     const { pathname } = router;
-    debugger
     switch (pathname) {
       case '/auth/login':
         return <Login />;

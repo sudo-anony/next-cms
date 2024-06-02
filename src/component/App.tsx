@@ -16,11 +16,11 @@ const App: React.FC<AppProps> = ({ children }) => {
     <Suspense fallback={<LayoutSplashScreen />}>
       <I18nProvider>
         <LayoutProvider>
-          <AuthInit>
-            <AuthGuard>
+          <AuthGuard>
+            <AuthInit>
               <MasterLayout>{children}</MasterLayout>
-            </AuthGuard>
-          </AuthInit>
+            </AuthInit>
+          </AuthGuard>
         </LayoutProvider>
       </I18nProvider>
       <MasterInit />
