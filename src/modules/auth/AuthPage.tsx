@@ -7,7 +7,6 @@ import { toAbsoluteUrl } from '@/theme/helpers';
 
 export function AuthPage() {
   const router = useRouter();
-
   useEffect(() => {
     document.body.classList.add('bg-white');
     return () => {

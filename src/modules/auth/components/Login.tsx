@@ -75,10 +75,9 @@ export function Login() {
       <div className='text-center mb-10'>
         <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
         <div className='text-gray-400 fw-bold fs-4'>
-          New Here?{' '}
-          {/* Replace with Next.js Link if needed */}
-          <Link href='/auth/registration'>
-            <a className='link-primary fw-bolder'>Create an Account</a>
+          New Here?
+          <Link href='/auth/registration' passHref>
+            <span className='link-primary fw-bolder'>Create an Account</span>
           </Link>
         </div>
       </div>
@@ -89,8 +88,7 @@ export function Login() {
       ) : (
         <div className='mb-10 bg-light-info p-8 rounded'>
           <div className='text-info'>
-            Use account <strong>admin@demo.com</strong> and password <strong>demo</strong> to
-            continue.
+            Use account <strong>admin@demo.com</strong> and password <strong>demo</strong> to continue.
           </div>
         </div>
       )}
@@ -102,9 +100,7 @@ export function Login() {
           className={clsx(
             'form-control form-control-lg form-control-solid',
             { 'is-invalid': formik.touched.email && formik.errors.email },
-            {
-              'is-valid': formik.touched.email && !formik.errors.email,
-            }
+            { 'is-valid': formik.touched.email && !formik.errors.email }
           )}
           type='email'
           name='email'
@@ -120,12 +116,11 @@ export function Login() {
         <div className='d-flex justify-content-between mt-n5'>
           <div className='d-flex flex-stack mb-2'>
             <label className='form-label fw-bolder text-dark fs-6 mb-0'>Password</label>
-            {/* Replace with Next.js Link if needed */}
-            {/* <Link href='/auth/forgot-password'>
-              <a className='link-primary fs-6 fw-bolder' style={{ marginLeft: '5px' }}>
-                Forgot Password ?
-              </a>
-            </Link> */}
+            <Link href='/auth/forgot-password' prefetch={true}>
+              <span className='link-primary fs-6 fw-bolder' style={{ marginLeft: '5px' }}>
+                Forgot Password?
+              </span>
+            </Link>
           </div>
         </div>
         <input
@@ -134,12 +129,8 @@ export function Login() {
           {...formik.getFieldProps('password')}
           className={clsx(
             'form-control form-control-lg form-control-solid',
-            {
-              'is-invalid': formik.touched.password && formik.errors.password,
-            },
-            {
-              'is-valid': formik.touched.password && !formik.errors.password,
-            }
+            { 'is-invalid': formik.touched.password && formik.errors.password },
+            { 'is-valid': formik.touched.password && !formik.errors.password }
           )}
         />
         {formik.touched.password && formik.errors.password && (

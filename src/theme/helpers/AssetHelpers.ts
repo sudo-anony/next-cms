@@ -1,1 +1,1 @@
-export const toAbsoluteUrl = (pathname: string) => process.env.APP_URL + pathname
+export const toAbsoluteUrl = (pathname: string) => "http://localhost:3001" + pathname
