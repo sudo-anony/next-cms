@@ -126,7 +126,7 @@ export function ForgotPassword() {
             >
               Cancel
             </button>
-          </Link>{' '}
+          </Link>
         </div>
         {/* end::Form group */}
       </form>

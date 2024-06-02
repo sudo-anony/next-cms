@@ -70,7 +70,7 @@ const QuickLinks: FC = () => (
     </div>
 
     <div className='py-2 text-center border-top'>
-      <Link to='/crafted/pages/profile' className='btn btn-color-gray-600 btn-active-color-primary'>
+      <Link href='/crafted/pages/profile' className='btn btn-color-gray-600 btn-active-color-primary'>
         View All <KTSVG path='/media/icons/duotune/arrows/arr064.svg' className='svg-icon-5' />
       </Link>
     </div>
