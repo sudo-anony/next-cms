@@ -27,7 +27,6 @@ const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
   const router = useRouter();
   const paths = process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS ? process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS.split(',') : [];
   const startExam = paths.includes(router.pathname);
-
   useEffect(() => {
     setTimeout(() => {
       MenuComponent.reinitialization();

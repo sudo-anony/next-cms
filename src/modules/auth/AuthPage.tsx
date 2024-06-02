@@ -15,7 +15,7 @@ export function AuthPage() {
   }, []);
 
   const renderComponent = () => {
-    const { pathname } = router;
+    const pathname = router.asPath;
     switch (pathname) {
       case '/auth/login':
         return <Login />;

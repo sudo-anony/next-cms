@@ -55,6 +55,7 @@ export function Login() {
             setLoading(false);
             dispatch(auth.actions.login(accessToken));
             sessionStorage.setItem("token", accessToken);
+            debugger
             router.push('/dashboard');
           })
           .catch(() => {
@@ -77,7 +78,7 @@ export function Login() {
         <h1 className='text-dark mb-3'>Sign In to Metronic</h1>
         <div className='text-gray-400 fw-bold fs-4'>
           New Here?
-          <Link href='/auth/registration' passHref>
+          <Link href='/auth/registration'>
             <span className='link-primary fw-bolder'>Create an Account</span>
           </Link>
         </div>

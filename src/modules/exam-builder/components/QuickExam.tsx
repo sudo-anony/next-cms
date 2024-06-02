@@ -11,7 +11,7 @@ import PaginationItem from '@mui/material/PaginationItem';
 import Stack from '@mui/material/Stack';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import { RootState } from '../../../../setup';
+import { RootState } from '../../../setup';
 import { CompleteExam, PossibleAnswer, QuestionDiscussion } from '../models/models';
 import * as crud from '../redux/EXAMCRUD';
 import PAnswer from "../components/PossibleAnswer";

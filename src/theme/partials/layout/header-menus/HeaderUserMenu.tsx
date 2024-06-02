@@ -8,13 +8,16 @@ import { Languages } from './Languages'
 import * as auth from '../../../../modules/auth/'
 import { useDispatch } from 'react-redux'
 import { toAbsoluteUrl } from '../../../helpers'
+import { useRouter } from 'next/router';
 
 const HeaderUserMenu: FC = () => {
   const user: UserModel = useSelector<RootState>(({ auth }) => auth.user, shallowEqual) as UserModel
-
+  const router = useRouter();
   const dispatch = useDispatch()
   const logout = () => {
+    sessionStorage.removeItem("token");
     dispatch(auth.actions.logout())
+    router.push('/auth');
   }
   return (
     <div
