@@ -23,7 +23,9 @@ export function ScrollTop() {
   }
 
   const scrollTop = () => {
-    ScrollTopComponent.goTop()
+    if (typeof ScrollTopComponent !== 'undefined' && ScrollTopComponent !== null) {
+      ScrollTopComponent.goTop()
+    }
   }
 
   const updateHeaderSticky = () => {
@@ -44,10 +46,12 @@ export function ScrollTop() {
     }
 
     updateHeaderSticky()
-    setTimeout(() => {
-      scrollTop()
-    }, 0)
   }, [pathname])
+
+  useEffect(() => {
+    // Call scrollTop after the component is mounted
+    scrollTop()
+  }, [])
 
   return (
     <div id='kt_scrolltop' className='scrolltop' data-kt-scrolltop='true'>

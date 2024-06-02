@@ -20,7 +20,7 @@ const AuthInit: FC<PropsFromRedux> = (props) => {
   useEffect(() => {
     const requestUser = async () => {
       try {
-        if (!didRequest.current) {
+        if (accessToken && !didRequest.current) {
           const { data: user } = await getUserByToken()
           dispatch(props.fulfillUser(user))
         }
@@ -41,8 +41,8 @@ const AuthInit: FC<PropsFromRedux> = (props) => {
       dispatch(props.logout())
       setShowSplashScreen(false)
     }
-    // eslint-disable-next-line
-  }, [])
+  }, [accessToken]) // Include accessToken in dependencies
+
 
   return showSplashScreen ? <LayoutSplashScreen /> : <>{props.children}</>
 }

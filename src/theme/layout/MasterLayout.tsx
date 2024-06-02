@@ -1,4 +1,4 @@
-import React, { useEffect, ReactNode, FC } from 'react';
+import React, { useEffect, ReactNode, FC, useState } from 'react';
 import { useRouter } from 'next/router';
 import { AsideDefault } from './components/aside/AsideDefault';
 import { Footer } from './components/Footer';
@@ -17,6 +17,7 @@ import {
 } from '../partials';
 import { MenuComponent } from '../../theme/assets/ts/components';
 import clsx from 'clsx';
+import Fade from '@mui/material/Fade';
 
 type MasterLayoutProps = {
   children?: ReactNode;
@@ -27,9 +28,11 @@ const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
   const router = useRouter();
   const paths = process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS ? process.env.NEXT_PUBLIC_HIDE_LAYOUT_URLS.split(',') : [];
   const startExam = paths.includes(router.pathname);
+  const [showContent, setShowContent] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       MenuComponent.reinitialization();
+      setShowContent(true);
     }, 500);
   }, []);
 
@@ -56,13 +59,20 @@ const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
                 id='kt_post'
               ></div>
             </div>
-            <Footer />
+
           </div>
         </div>
       )}
 
       <AsideDefault />
-      <Content>{children}</Content>
+      <Fade in={showContent} timeout={1500}>
+        <Content>{children}</Content>
+      </Fade>
+
+      {!startExam && (
+        <Footer />
+      )}
+
       {/* begin:: Drawers */}
       <ActivityDrawer />
       <ExploreMain />
