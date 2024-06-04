@@ -1,5 +1,4 @@
 import * as React from 'react';
-import axios from 'axios';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -18,6 +17,7 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 import { useDispatch } from 'react-redux';
 import { actions } from '../redux/ExamRedux';
 import { useRouter } from 'next/router';
+import { ClassifiedData } from '../models/models'
 dayjs.extend(relativeTime);
 
 interface Column {
@@ -38,17 +38,6 @@ const columns: Column[] = [
     { id: 'status', label: 'Status', minWidth: 120 },
 ];
 
-interface Data {
-    title: string;
-    type: string;
-    token: string;
-    startDate: string;
-    expireDate: string;
-    accuracy: number | null;
-    questionsCount: string;
-    status: string;
-    showToken: boolean;
-}
 
 const createData = (
     title: string,
@@ -59,17 +48,17 @@ const createData = (
     accuracy: number | null,
     questionsCount: string,
     status: string
-): Data => {
+): ClassifiedData => {
     return { title, type, token, startDate, expireDate, accuracy, questionsCount, status, showToken: false };
 };
 
-const fetchData = async (page: number, rowsPerPage: number): Promise<{ data: Data[], totalCount: number }> => {
+const fetchData = async (page: number, rowsPerPage: number): Promise<{ data: ClassifiedData[], totalCount: number }> => {
     const response = await EXAMCRUD.fetchUserClassfiedExams(page * rowsPerPage, rowsPerPage);
-    console.log(response);
-    const data = response.data.map((item: any) =>
-        createData(item.title, item.exam_type, item.token, item.start_date, item.expire_date, item.accuracy, item.questions_count, item.status)
-    );
-
+    const dataPromises = response.data.map(async (item: any) => {
+        const quiz = await EXAMCRUD.fetchQuizByExamId(item.id);
+        return createData(item.title, item.exam_type, item.token, quiz.start_date, quiz.expire_date, item.accuracy, item.questions_count, item.status);
+    });
+    const data = await Promise.all(dataPromises);
     return { data, totalCount: response.total_count };
 };
 
@@ -79,7 +68,7 @@ export default function AllConfidentialExams() {
     const navigate = useRouter();
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(10);
-    const [data, setData] = React.useState<Data[]>([]);
+    const [data, setData] = React.useState<ClassifiedData[]>([]);
     const [totalCount, setTotalCount] = React.useState(0);
 
     const fetchPageData = React.useCallback(async () => {
@@ -160,13 +149,13 @@ export default function AllConfidentialExams() {
     const capitalizeFirstLetter = (str: string): string => {
         return str.charAt(0).toUpperCase() + str.slice(1);
     };
-    const handleStartClick = async (row: Data) => {
+    const handleStartClick = async (row: ClassifiedData) => {
         dispatch(actions.clearExam());
         const response = await EXAMCRUD.startExam(row.token);
         const { exam, quiz, questions } = response.data;
         const completeExam = { exam, quiz, questions };
         dispatch(actions.setExam(completeExam));
-        navigate.push('/exam-attemption/quick-exam');
+        navigate.push(`/exam-attemption/quick-exam/${completeExam.exam.token}`);
     };
 
     const memoizedRemainingTime = React.useMemo(() => getRemainingTime, [getRemainingTime]);
