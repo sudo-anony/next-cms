@@ -10,9 +10,11 @@ export interface ExamModel {
   export interface QuizModel {
     id: number;
     title: string;
+    start_date: string; 
+    expire_date: string;
     userId: number;
-  }
-  
+}
+
   export interface QuestionModel {
     id: number;
     title: string;
@@ -38,3 +40,15 @@ export interface ExamModel {
     content: string,
     user_id: number
   }
+
+  export interface ClassifiedData {
+    title: string;
+    type: string;
+    token: string;
+    startDate: string;
+    expireDate: string;
+    accuracy: number | null;
+    questionsCount: string;
+    status: string;
+    showToken: boolean;
+}
