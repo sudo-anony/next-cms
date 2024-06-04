@@ -5,6 +5,7 @@ export interface ExamModel {
     userId: number;
     token: string;
     accuracy: number;
+    status: string;
   }
   
   export interface QuizModel {

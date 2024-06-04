@@ -65,9 +65,9 @@ const MasterLayout: FC<MasterLayoutProps> = ({ children }) => {
       )}
 
       <AsideDefault />
-      <Fade in={showContent} timeout={1500}>
-        <Content>{children}</Content>
-      </Fade>
+      {/* <Fade in={showContent} timeout={1500}> */}
+      <Content>{children}</Content>
+      {/* </Fade> */}
 
       {!startExam && (
         <Footer />

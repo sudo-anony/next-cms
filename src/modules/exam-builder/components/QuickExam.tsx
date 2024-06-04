@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-import { Button, Alert } from 'react-bootstrap';
+import { Alert } from 'react-bootstrap';
 import ValidationHelper from '../ValidationHelper';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -16,7 +16,11 @@ import { CompleteExam, PossibleAnswer, QuestionDiscussion } from '../models/mode
 import * as crud from '../redux/EXAMCRUD';
 import PAnswer from "../components/PossibleAnswer";
 import { Discussion } from './Discussion';
-import Submission from "./subMission"
+import Submission from "./subMission";
+import { toast } from 'react-toastify';
+import { Button } from '@mui/material';
+import BackupTwoToneIcon from '@mui/icons-material/BackupTwoTone';
+import NavigateNextTwoToneIcon from '@mui/icons-material/NavigateNextTwoTone';
 
 const QuickExam: React.FC = () => {
     const [tabValue, setTabValue] = useState('one');
@@ -35,13 +39,6 @@ const QuickExam: React.FC = () => {
         fetchDiscussions();
     }, [selectedQuestionIndex]);
 
-    useEffect(() => {
-        const savedAnswers = localStorage.getItem('selectedAnswers');
-        if (savedAnswers) {
-            setSelectedAnswers(JSON.parse(savedAnswers));
-        }
-    }, []);
-
     const fetchAnswers = async () => {
         const question = completeExam?.questions[selectedQuestionIndex];
         const questionId = question?.id;
@@ -54,7 +51,6 @@ const QuickExam: React.FC = () => {
             }
         }
     };
-
 
     const fetchDiscussions = async () => {
         const question = completeExam?.questions[selectedQuestionIndex];
@@ -129,6 +125,53 @@ const QuickExam: React.FC = () => {
         }
     };
 
+    const saveAnswer = async (): Promise<boolean> => {
+        const examId = completeExam?.exam.id;
+        const questionIndex = selectedQuestionIndex;
+        const answerIndex = selectedAnswers[questionIndex];
+        const possibleAnswer = possibleAnswers[answerIndex];
+
+        if (examId !== undefined && possibleAnswer?.id !== undefined) {
+            const toastId = toast.loading("Saving your answer...");
+            try {
+                await crud.saveAnswer(examId, possibleAnswer.id);
+                toast.update(toastId, { render: "Answer saved successfully!", type: "success", isLoading: false, autoClose: 3000 });
+                return true;
+            } catch (error) {
+                toast.update(toastId, { render: "Failed to save answer.", type: "error", isLoading: false, autoClose: 3000 });
+                console.error('Error submitting answer:', error);
+                return false;
+            }
+        } else {
+            toast.error('Please select an answer before submitting.');
+            return false;
+        }
+    };
+
+    const handleNextButtonClick = async () => {
+        const selectedAnswerIndex = selectedAnswers[selectedQuestionIndex];
+        if (selectedAnswerIndex !== undefined) {
+            const success = await saveAnswer();
+            if (success && completeExam && completeExam.questions && completeExam.questions.length) {
+                const nextQuestionIndex = selectedQuestionIndex + 1;
+                if (nextQuestionIndex < completeExam.questions.length) {
+                    setActivePage(nextQuestionIndex + 1);
+                    setSelectedQuestionIndex(nextQuestionIndex);
+                } else {
+                    toast.info('You have reached the end of the exam.');
+                }
+            }
+        } else {
+            const nextQuestionIndex = selectedQuestionIndex + 1;
+            if (completeExam && completeExam.questions && nextQuestionIndex < completeExam.questions.length) {
+                setActivePage(nextQuestionIndex + 1);
+                setSelectedQuestionIndex(nextQuestionIndex);
+            } else {
+                toast.info('You have reached the end of the exam.');
+            }
+        }
+    };
+
     return (
         <div ref={containerRef}>
             {showFullScreen ? (
@@ -147,7 +190,7 @@ const QuickExam: React.FC = () => {
                             <p>To commence the exam, please click <b>Enter Fullscreen</b> button below to enter fullscreen mode:</p>
                         </Alert>
                     </div>
-                    <Button onClick={handleButtonClick} className="fullscreen-button">Enter Fullscreen</Button>
+                    <Button variant="contained" color="primary" size="large" onClick={handleButtonClick} className="fullscreen-button">Enter Fullscreen</Button>
                 </div>
             ) : (
                 <>
@@ -199,8 +242,11 @@ const QuickExam: React.FC = () => {
                                         <span className="fw-bolder mb-2 text-light">Choose your answer carefully</span>
                                     </h3>
                                     <div className='card-toolbar'>
-                                        <Button >
-                                            Submit
+                                        <Button variant="contained" color="success" size="large" onClick={saveAnswer}>
+                                            <span className='mx-2'>Submit</span> <BackupTwoToneIcon />
+                                        </Button>
+                                        <Button className='mx-2' variant="contained" color="primary" size="large" onClick={handleNextButtonClick}>
+                                            <span className='mx-2'>Next</span> <NavigateNextTwoToneIcon />
                                         </Button>
                                     </div>
                                 </div>
@@ -213,6 +259,7 @@ const QuickExam: React.FC = () => {
                                                 index={index}
                                                 isSelected={selectedAnswers[selectedQuestionIndex] === index}
                                                 onSelect={() => handleAnswerSelect(selectedQuestionIndex, index)}
+                                                status={completeExam?.exam.status}
                                             />
                                         ))}
                                     </Box>
