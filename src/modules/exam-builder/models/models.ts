@@ -36,6 +36,17 @@ export interface ExamModel {
     correct: boolean
   }
 
+  export interface Answer {
+    possible_answer_id: number
+    correct: boolean
+  }
+
+  export interface Answer {
+    id: number,
+    content: string
+    correct: boolean
+  }
+
   export interface QuestionDiscussion {
     id: number,
     content: string,

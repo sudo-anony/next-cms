@@ -1,5 +1,5 @@
 import axios ,  { AxiosPromise } from 'axios'
-import { PossibleAnswer , QuestionDiscussion } from '../models/models'
+import { Answer, PossibleAnswer , QuestionDiscussion } from '../models/models'
 import { UserModel } from '../../auth/models/UserModel'
 import { QuizModel } from '../models/models';
 
@@ -9,7 +9,8 @@ export const FETCH_POSSIBLE_ANSWERS_URL = `${API_URL}/explorer/quick_exams/fetch
 export const FETCH_QUESTION_DISCUSSIONS = `${API_URL}/explorer/quick_exams/fetch_question_discussion`;
 export const FETCH_DISCUSSION_AUTHOR = `${API_URL}/user/fetch_user_by_id`;
 export const FETCH_USER_CLASSFIED_EXAMS = `${API_URL}/explorer/quick_exams/fetch_classified_exams`;
-export const FETCH_QUIZ_BY_EXAM_ID = `${API_URL}/explorer/quick_exams/fetch_quiz_by_exam`;;
+export const FETCH_QUIZ_BY_EXAM_ID = `${API_URL}/explorer/quick_exams/fetch_quiz_by_exam`;
+export const FETCH_SUBMITTED_ANSWER = `${API_URL}/explorer/quick_exams/fetch_submitted_answer`;
 
 
 export function startExam(token: string): AxiosPromise {
@@ -44,3 +45,9 @@ export async function fetchUserClassfiedExams(offset: number,limit: number): Pro
 export function saveAnswer(id:number , possible_answer_id: number): AxiosPromise {
   return axios.post(`${API_URL}/explorer/quick_exams/${id}/submit_answer?possible_answer_id=${possible_answer_id}`);
 }
+
+export async function fetchSubmittedAnswer(id: number,question_id: number): Promise<Answer> {
+  const response = await axios.get<any>(`${FETCH_SUBMITTED_ANSWER}?exam_id=${id}&question_id=${question_id}`);
+  return response.data;
+} 
+

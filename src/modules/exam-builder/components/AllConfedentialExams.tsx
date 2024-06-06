@@ -155,7 +155,7 @@ export default function AllConfidentialExams() {
         const { exam, quiz, questions } = response.data;
         const completeExam = { exam, quiz, questions };
         dispatch(actions.setExam(completeExam));
-        navigate.push(`/exam-attemption/quick-exam/${completeExam.exam.token}`);
+        navigate.push(`/exam-attemption/quick-exam`);
     };
 
     const memoizedRemainingTime = React.useMemo(() => getRemainingTime, [getRemainingTime]);
