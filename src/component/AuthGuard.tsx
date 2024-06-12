@@ -10,15 +10,15 @@ const AuthGuard: FC<{ children: React.ReactNode }> = ({ children }) => {
             if (typeof window !== 'undefined') {
                 const token = sessionStorage.getItem('token');
                 setIsAuthorized(!!token);
-                if (isAuthorized && router.pathname === '/auth') {
+                if (!!token && router.pathname === '/auth') {
                     router.push('/dashboard');
-                } else if (!isAuthorized && router.pathname !== '/auth' && router.pathname !== '/') {
+                } else if (!token && router.pathname !== '/auth' && router.pathname !== '/') {
                     router.push('/auth');
                 }
             }
         };
         checkAuthorization();
-    }, [isAuthorized, router.pathname]);
+    }, [router.pathname]);
 
     return <>{children}</>;
 };
