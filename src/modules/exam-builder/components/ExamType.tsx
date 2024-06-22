@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { KTSVG } from '@/theme/helpers';
 import { ExamMain } from "../../../theme/partials/modals/exam/main";
-import AllConfedentialExams from './AllConfedentialExams';
+import AllConfidentialExams from './AllConfedentialExams';
+import { useRouter } from 'next/router';
+
 
 const ExamType = () => {
+    const router = useRouter();
     const [showModal, setShowModal] = useState(false);
 
     const handleShowModal = () => {
@@ -13,6 +16,10 @@ const ExamType = () => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const goToPersonalized = () => {
+        router.push('virtual-exam')
+    }
 
     return (
         <>
@@ -36,7 +43,7 @@ const ExamType = () => {
                             Our platform offers two types of exams: Quick Exams and Personalized Exams using AI.
                             Quick Exams utilize tokens for immediate setup and testing. Personalized Exams use
                             AI to generate tailored exams for any subject—just specify the subject name and
-                            question count, and you're ready to go..
+                            question count, and you're ready to go.
                         </p>
                     </div>
                     {/* Description */}
@@ -50,12 +57,12 @@ const ExamType = () => {
                     <div className={`mixed-widget-2-chart card-rounded-bottom bg-danger`}></div>
                     <div className='card-p mt-n20 position-relative'>
                         <div className='row g-0'>
-                            <div className='col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7 cursor-pointer'>
+                            <div className='col bg-light-warning px-6 py-8 rounded-2 me-7 mb-7 cursor-pointer' onClick={goToPersonalized}>
                                 <KTSVG
                                     path='/media/icons/duotune/general/gen032.svg'
                                     className='svg-icon-3x svg-icon-warning d-block my-2'
                                 />
-                                <a href='#' className='text-warning fw-bold fs-6'>
+                                <a href='#' className='text-warning fw-bold fs-6' >
                                     Personalized Exam
                                 </a>
                             </div>
@@ -73,7 +80,7 @@ const ExamType = () => {
                 </div>
             </div>
             <ExamMain show={showModal} handleClose={handleCloseModal} />
-            <AllConfedentialExams />
+            <AllConfidentialExams />
         </>
     );
 };
