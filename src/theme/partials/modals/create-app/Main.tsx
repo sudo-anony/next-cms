@@ -4,61 +4,52 @@ import { KTSVG, toAbsoluteUrl } from '../../../helpers'
 import { Formik, Form, FormikValues, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { StepperComponent } from '../../../assets/ts/components'
+import { useDispatch } from 'react-redux';
+import * as examCrud from '../../../../modules/exam-builder/redux/EXAMCRUD';
+import { useRouter } from 'next/router';
+import { actions } from '../../../../modules/exam-builder/redux/ExamRedux';
 
-interface ICreateAccount {
-  appName: string
+interface ICreateVirtualExam {
+  subjectName: string
   category: string
-  framework: string
-  dbName: string
-  dbType: string
-  nameOnCard: string
-  cardNumber: string
-  cardExpiryMonth: string
-  cardExpiryYear: string
-  cardCvv: string
-  saveCard: string
+  difficulty: string
+  questionsCount: string
+
 }
 
-const inits: ICreateAccount = {
-  appName: '',
-  category: '1',
-  framework: '1',
-  dbName: '',
-  dbType: '1',
-  nameOnCard: 'Max Doe',
-  cardNumber: '4111 1111 1111 1111',
-  cardExpiryMonth: '1',
-  cardExpiryYear: '2025',
-  cardCvv: '123',
-  saveCard: '1',
+const inits: ICreateVirtualExam = {
+  subjectName: '',
+  category: '',
+  difficulty: '',
+  questionsCount: '',
+
 }
 
 const createAppSchema = [
   Yup.object({
-    appName: Yup.string().required().label('App name'),
+    subjectName: Yup.string().required().label('Subject name'),
     category: Yup.string().required().label('Category'),
   }),
   Yup.object({
-    framework: Yup.string().required().label('Framework'),
+    difficulty: Yup.string().required().label('Difficulty'),
   }),
   Yup.object({
-    dbName: Yup.string().required().label('Database name'),
-    dbType: Yup.string().required().label('Database engine'),
+    questionsCount: Yup.string().required().label('Questions Count'),
   }),
-  Yup.object({
-    nameOnCard: Yup.string().required().label('Name'),
-    cardNumber: Yup.string().required().label('Card Number'),
-    cardExpiryMonth: Yup.string().required().label('Expiration Month'),
-    cardExpiryYear: Yup.string().required().label('Expiration Year'),
-    cardCvv: Yup.string().required().label('CVV'),
-  }),
+
 ]
 
+
+
 const Main: FC = () => {
+  const dispatch = useDispatch();
+  const redirect = useRouter();
   const stepperRef = useRef<HTMLDivElement | null>(null)
   const stepper = useRef<StepperComponent | null>(null)
   const [currentSchema, setCurrentSchema] = useState(createAppSchema[0])
-  const [initValues] = useState<ICreateAccount>(inits)
+  const [initValues] = useState<ICreateVirtualExam>(inits)
+
+
 
   const loadStepper = () => {
     stepper.current = StepperComponent.createInsance(stepperRef.current as HTMLDivElement)
@@ -74,7 +65,7 @@ const Main: FC = () => {
     setCurrentSchema(createAppSchema[stepper.current.currentStepIndex - 1])
   }
 
-  const submitStep = (values: ICreateAccount, actions: FormikValues) => {
+  const submitStep = (values: ICreateVirtualExam, fActions: FormikValues) => {
     if (!stepper.current) {
       return
     }
@@ -84,8 +75,32 @@ const Main: FC = () => {
     if (stepper.current.currentStepIndex !== stepper.current.totatStepsNumber) {
       stepper.current.goNext()
     } else {
-      stepper.current.goto(1)
-      actions.resetForm()
+      const virtualExam = async (values: ICreateVirtualExam, formikActions: any) => {
+        try {
+          formikActions.setSubmitting(true);
+          dispatch(actions.clearExam());
+          const formData = new FormData();
+          formData.append('subject', values?.subjectName);
+          formData.append('question_count', values?.questionsCount);
+          formData.append('difficulty', values?.difficulty);
+          formData.append('type', values?.category);
+          console.log(formData);
+          const response = await examCrud.createVirtualExam(formData);
+          console.log(response);
+          const { exam, quiz, questions } = response.data;
+          const completeExam = { exam, quiz, questions };
+          dispatch(actions.setExam(completeExam));
+          dispatch(actions.setExamModulePath("ALI"));
+          redirect.push('/virtual-exam');
+        } catch (error) {
+          console.error('Error fetching exam token:', error);
+        } finally {
+          formikActions.setSubmitting(false);
+        }
+      };
+      virtualExam(values, fActions);
+      // stepper.current.goto(1)
+      // actions.resetForm()
     }
   }
 
@@ -98,11 +113,11 @@ const Main: FC = () => {
   }, [stepperRef])
 
   return (
-    <div className='modal fade' id='kt_modal_create_app' aria-hidden='true'>
+    <div className='modal fade' id='kt_modal_create_app' data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="staticBackdropLabel" aria-hidden="true">
       <div className='modal-dialog modal-dialog-centered mw-900px'>
         <div className='modal-content'>
           <div className='modal-header'>
-            <h2>Create App</h2>
+            <h2>Virtual Exam</h2>
 
             <div className='btn btn-sm btn-icon btn-active-color-primary' data-bs-dismiss='modal'>
               <KTSVG path='/media/icons/duotune/arrows/arr061.svg' className='svg-icon-1' />
@@ -128,7 +143,7 @@ const Main: FC = () => {
                     <div className='stepper-label'>
                       <h3 className='stepper-title'>Details</h3>
 
-                      <div className='stepper-desc'>Name your App</div>
+                      <div className='stepper-desc'>Subject Name</div>
                     </div>
                   </div>
 
@@ -141,9 +156,9 @@ const Main: FC = () => {
                     </div>
 
                     <div className='stepper-label'>
-                      <h3 className='stepper-title'>Frameworks</h3>
+                      <h3 className='stepper-title'>Diffculty</h3>
 
-                      <div className='stepper-desc'>Define your app framework</div>
+                      <div className='stepper-desc'>Define your exam difficulty</div>
                     </div>
                   </div>
 
@@ -156,24 +171,9 @@ const Main: FC = () => {
                     </div>
 
                     <div className='stepper-label'>
-                      <h3 className='stepper-title'>Database</h3>
+                      <h3 className='stepper-title'>Total Questions</h3>
 
-                      <div className='stepper-desc'>Select the app database type</div>
-                    </div>
-                  </div>
-
-                  <div className='stepper-item' data-kt-stepper-element='nav'>
-                    <div className='stepper-line w-40px'></div>
-
-                    <div className='stepper-icon w-40px h-40px'>
-                      <i className='stepper-check fas fa-check'></i>
-                      <span className='stepper-number'>4</span>
-                    </div>
-
-                    <div className='stepper-label'>
-                      <h3 className='stepper-title'>Billing</h3>
-
-                      <div className='stepper-desc'>Provide payment details</div>
+                      <div className='stepper-desc'>Total number of questions</div>
                     </div>
                   </div>
 
@@ -206,7 +206,7 @@ const Main: FC = () => {
                         <div className='w-100'>
                           <div className='fv-row mb-10'>
                             <label className='d-flex align-items-center fs-5 fw-bold mb-2'>
-                              <span className='required'>App Name</span>
+                              <span className='required'>Subject Title</span>
                               <i
                                 className='fas fa-exclamation-circle ms-2 fs-7'
                                 data-bs-toggle='tooltip'
@@ -217,11 +217,11 @@ const Main: FC = () => {
                             <Field
                               type='text'
                               className='form-control form-control-lg form-control-solid'
-                              name='appName'
+                              name='subjectName'
                               placeholder=''
                             />
                             <div className='text-danger'>
-                              <ErrorMessage name='appName' />
+                              <ErrorMessage name='subjectName' />
                             </div>
                           </div>
 
@@ -249,10 +249,11 @@ const Main: FC = () => {
                                   </span>
 
                                   <span className='d-flex flex-column'>
-                                    <span className='fw-bolder fs-6'>Quick Online Courses</span>
+                                    <span className='fw-bolder fs-6'>Multiple Choice</span>
 
                                     <span className='fs-7 text-muted'>
-                                      Creating a clear text structure is just one SEO
+                                      Our AI will generate a multiple choice exam for you
+                                      according to your requirement.
                                     </span>
                                   </span>
                                 </span>
@@ -262,7 +263,7 @@ const Main: FC = () => {
                                     className='form-check-input'
                                     type='radio'
                                     name='category'
-                                    value='1'
+                                    value='multipleChoice'
                                   />
                                 </span>
                               </label>
@@ -279,10 +280,10 @@ const Main: FC = () => {
                                   </span>
 
                                   <span className='d-flex flex-column'>
-                                    <span className='fw-bolder fs-6'>Face to Face Discussions</span>
+                                    <span className='fw-bolder fs-6'>Explnation Questions</span>
 
                                     <span className='fs-7 text-muted'>
-                                      Creating a clear text structure is just one aspect
+                                      Creating a explnaion question for essay type questions
                                     </span>
                                   </span>
                                 </span>
@@ -292,7 +293,7 @@ const Main: FC = () => {
                                     className='form-check-input'
                                     type='radio'
                                     name='category'
-                                    value='2'
+                                    value='explanation'
                                   />
                                 </span>
                               </label>
@@ -309,10 +310,10 @@ const Main: FC = () => {
                                   </span>
 
                                   <span className='d-flex flex-column'>
-                                    <span className='fw-bolder fs-6'>Full Intro Training</span>
+                                    <span className='fw-bolder fs-6'>Coding</span>
 
                                     <span className='fs-7 text-muted'>
-                                      Creating a clear text structure copywriting
+                                      Our AI will generate coding question for you.
                                     </span>
                                   </span>
                                 </span>
@@ -322,7 +323,7 @@ const Main: FC = () => {
                                     className='form-check-input'
                                     type='radio'
                                     name='category'
-                                    value='3'
+                                    value='coding'
                                   />
                                 </span>
                               </label>
@@ -339,11 +340,11 @@ const Main: FC = () => {
                         <div className='w-100'>
                           <div className='fv-row'>
                             <label className='d-flex align-items-center fs-5 fw-bold mb-4'>
-                              <span className='required'>Select Framework</span>
+                              <span className='required'>Select your level</span>
                               <i
                                 className='fas fa-exclamation-circle ms-2 fs-7'
                                 data-bs-toggle='tooltip'
-                                title='Specify your apps framework'
+                                title='Specify your apps difficulty'
                               ></i>
                             </label>
 
@@ -356,9 +357,9 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>HTML5</span>
+                                  <span className='fw-bolder fs-6'>Easy</span>
 
-                                  <span className='fs-7 text-muted'>Base Web Projec</span>
+                                  <span className='fs-7 text-muted'>Basic questions</span>
                                 </span>
                               </span>
 
@@ -366,8 +367,8 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='framework'
-                                  value='1'
+                                  name='difficulty'
+                                  value='easy'
                                 />
                               </span>
                             </label>
@@ -381,9 +382,9 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>ReactJS</span>
+                                  <span className='fw-bolder fs-6'>Medium</span>
                                   <span className='fs-7 text-muted'>
-                                    Robust and flexible app framework
+                                    Medium Level questions
                                   </span>
                                 </span>
                               </span>
@@ -392,8 +393,8 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='framework'
-                                  value='2'
+                                  name='difficulty'
+                                  value='medium'
                                 />
                               </span>
                             </label>
@@ -407,8 +408,8 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>Angular</span>
-                                  <span className='fs-7 text-muted'>Powerful data mangement</span>
+                                  <span className='fw-bolder fs-6'>Hard</span>
+                                  <span className='fs-7 text-muted'>Extreme hard questions</span>
                                 </span>
                               </span>
 
@@ -416,8 +417,8 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='framework'
-                                  value='3'
+                                  name='difficulty'
+                                  value='hard'
                                 />
                               </span>
                             </label>
@@ -431,9 +432,9 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>Vue</span>
+                                  <span className='fw-bolder fs-6'>Extreme</span>
                                   <span className='fs-7 text-muted'>
-                                    Lightweight and responsive framework
+                                    Professional
                                   </span>
                                 </span>
                               </span>
@@ -442,43 +443,23 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='framework'
-                                  value='4'
+                                  name='difficulty'
+                                  value='extreme'
                                 />
                               </span>
                             </label>
                           </div>
                           <div className='text-danger'>
-                            <ErrorMessage name='framework' />
+                            <ErrorMessage name='difficulty' />
                           </div>
                         </div>
                       </div>
 
                       <div data-kt-stepper-element='content'>
                         <div className='w-100'>
-                          <div className='fv-row mb-10'>
-                            <label className='required fs-5 fw-bold mb-2'>Database Name</label>
-
-                            <Field
-                              type='text'
-                              className='form-control form-control-lg form-control-solid'
-                              name='dbName'
-                              placeholder=''
-                            />
-                            <div className='text-danger'>
-                              <ErrorMessage name='dbName' />
-                            </div>
-                          </div>
-
                           <div className='fv-row'>
                             <label className='d-flex align-items-center fs-5 fw-bold mb-4'>
-                              <span className='required'>Select Database Engine</span>
-
-                              <i
-                                className='fas fa-exclamation-circle ms-2 fs-7'
-                                data-bs-toggle='tooltip'
-                                title='Select your app database engine'
-                              ></i>
+                              <span className='required'>Select Questions Available</span>
                             </label>
 
                             <label className='d-flex flex-stack cursor-pointer mb-5'>
@@ -490,9 +471,9 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>MySQL</span>
+                                  <span className='fw-bolder fs-6'>5</span>
 
-                                  <span className='fs-7 text-muted'>Basic MySQL database</span>
+                                  <span className='fs-7 text-muted'>You will be given 5 questions</span>
                                 </span>
                               </span>
 
@@ -500,8 +481,8 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='dbType'
-                                  value='1'
+                                  name='questionsCount'
+                                  value='5'
                                 />
                               </span>
                             </label>
@@ -515,10 +496,10 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>Firebase</span>
+                                  <span className='fw-bolder fs-6'>10</span>
 
                                   <span className='fs-7 text-muted'>
-                                    Google based app data management
+                                    You will be asked 10 questions
                                   </span>
                                 </span>
                               </span>
@@ -527,8 +508,8 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='dbType'
-                                  value='2'
+                                  name='questionsCount'
+                                  value='10'
                                 />
                               </span>
                             </label>
@@ -542,10 +523,10 @@ const Main: FC = () => {
                                 </span>
 
                                 <span className='d-flex flex-column'>
-                                  <span className='fw-bolder fs-6'>DynamoDB</span>
+                                  <span className='fw-bolder fs-6'>20</span>
 
                                   <span className='fs-7 text-muted'>
-                                    Amazon Fast NoSQL Database
+                                    You will be asked 20 questions
                                   </span>
                                 </span>
                               </span>
@@ -554,191 +535,15 @@ const Main: FC = () => {
                                 <Field
                                   className='form-check-input'
                                   type='radio'
-                                  name='dbType'
-                                  value='3'
+                                  name='questionsCount'
+                                  value='20'
                                 />
                               </span>
                             </label>
                           </div>
 
                           <div className='text-danger'>
-                            <ErrorMessage name='dbType' />
-                          </div>
-                        </div>
-                      </div>
-
-                      <div data-kt-stepper-element='content'>
-                        <div className='w-100'>
-                          <div className='pb-10 pb-lg-15'>
-                            <h2 className='fw-bolder text-dark'>Billing Details</h2>
-
-                            <div className='text-gray-400 fw-bold fs-6'>
-                              If you need more info, please check out
-                              <a href='#' className='text-primary fw-bolder'>
-                                Help Page
-                              </a>
-                              .
-                            </div>
-                          </div>
-                          <div className='d-flex flex-column mb-7 fv-row'>
-                            <label className='d-flex align-items-center fs-6 fw-bold form-label mb-2'>
-                              <span className='required'>Name On Card</span>
-                              <i
-                                className='fas fa-exclamation-circle ms-2 fs-7'
-                                data-bs-toggle='tooltip'
-                                title="Specify a card holder's name"
-                              ></i>
-                            </label>
-
-                            <Field
-                              type='text'
-                              className='form-control form-control-solid'
-                              placeholder=''
-                              name='nameOnCard'
-                            />
-                            <div className='text-danger'>
-                              <ErrorMessage name='nameOnCard' />
-                            </div>
-                          </div>
-                          <div className='d-flex flex-column mb-7 fv-row'>
-                            <label className='required fs-6 fw-bold form-label mb-2'>
-                              Card Number
-                            </label>
-
-                            <div className='position-relative'>
-                              <Field
-                                type='text'
-                                className='form-control form-control-solid'
-                                placeholder='Enter card number'
-                                name='cardNumber'
-                              />
-                              <div className='text-danger'>
-                                <ErrorMessage name='cardNumber' />
-                              </div>
-
-                              <div className='position-absolute translate-middle-y top-50 end-0 me-5'>
-                                <img
-                                  src={toAbsoluteUrl('/media/svg/card-logos/visa.svg')}
-                                  alt=''
-                                  className='h-25px'
-                                />
-                                <img
-                                  src={toAbsoluteUrl('/media/svg/card-logos/mastercard.svg')}
-                                  alt=''
-                                  className='h-25px'
-                                />
-                                <img
-                                  src={toAbsoluteUrl('/media/svg/card-logos/american-express.svg')}
-                                  alt=''
-                                  className='h-25px'
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className='row mb-10'>
-                            <div className='col-md-8 fv-row'>
-                              <label className='required fs-6 fw-bold form-label mb-2'>
-                                Expiration Date
-                              </label>
-
-                              <div className='row fv-row'>
-                                <div className='col-6'>
-                                  <Field
-                                    as='select'
-                                    name='cardExpiryMonth'
-                                    className='form-select form-select-solid'
-                                  >
-                                    <option></option>
-                                    <option value='1'>1</option>
-                                    <option value='2'>2</option>
-                                    <option value='3'>3</option>
-                                    <option value='4'>4</option>
-                                    <option value='5'>5</option>
-                                    <option value='6'>6</option>
-                                    <option value='7'>7</option>
-                                    <option value='8'>8</option>
-                                    <option value='9'>9</option>
-                                    <option value='10'>10</option>
-                                    <option value='11'>11</option>
-                                    <option value='12'>12</option>
-                                  </Field>
-                                  <div className='text-danger'>
-                                    <ErrorMessage name='cardExpiryMonth' />
-                                  </div>
-                                </div>
-
-                                <div className='col-6'>
-                                  <Field
-                                    as='select'
-                                    name='cardExpiryYear'
-                                    className='form-select form-select-solid'
-                                  >
-                                    <option></option>
-                                    <option value='2021'>2021</option>
-                                    <option value='2022'>2022</option>
-                                    <option value='2023'>2023</option>
-                                    <option value='2024'>2024</option>
-                                    <option value='2025'>2025</option>
-                                    <option value='2026'>2026</option>
-                                    <option value='2027'>2027</option>
-                                    <option value='2028'>2028</option>
-                                    <option value='2029'>2029</option>
-                                    <option value='2030'>2030</option>
-                                    <option value='2031'>2031</option>
-                                  </Field>
-                                  <div className='text-danger'>
-                                    <ErrorMessage name='cardExpiryYear' />
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-
-                            <div className='col-md-4 fv-row'>
-                              <label className='d-flex align-items-center fs-6 fw-bold form-label mb-2'>
-                                <span className='required'>CVV</span>
-                                <i
-                                  className='fas fa-exclamation-circle ms-2 fs-7'
-                                  data-bs-toggle='tooltip'
-                                  title='Enter a card CVV code'
-                                ></i>
-                              </label>
-
-                              <div className='position-relative'>
-                                <Field
-                                  type='text'
-                                  className='form-control form-control-solid'
-                                  placeholder='CVV'
-                                  name='cardCvv'
-                                />
-                                <div className='text-danger'>
-                                  <ErrorMessage name='cardCvv' />
-                                </div>
-
-                                <div className='position-absolute translate-middle-y top-50 end-0 me-3'>
-                                  <KTSVG
-                                    path='/media/icons/duotune/finance/fin002.svg'
-                                    className='svg-icon-2hx'
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className='d-flex flex-stack'>
-                            <div className='me-5'>
-                              <label className='fs-6 fw-bold form-label'>
-                                Save Card for further billing?
-                              </label>
-                              <div className='fs-7 fw-bold text-gray-400'>
-                                If you need more info, please check budget planning
-                              </div>
-                            </div>
-
-                            <label className='form-check form-switch form-check-custom form-check-solid'>
-                              <Field className='form-check-input' type='checkbox' />
-                              <span className='form-check-label fw-bold text-gray-400'>
-                                Save Card
-                              </span>
-                            </label>
+                            <ErrorMessage name='questionsCount' />
                           </div>
                         </div>
                       </div>
@@ -748,7 +553,7 @@ const Main: FC = () => {
                           <h1 className='fw-bolder text-dark mb-3'>Release!</h1>
 
                           <div className='text-muted fw-bold fs-3'>
-                            Submit your app to kickstart your project.
+                            Submit your selection to kickstart your exam.
                           </div>
 
                           <div className='text-center px-4 py-15'>

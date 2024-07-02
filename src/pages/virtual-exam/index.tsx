@@ -2,13 +2,14 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 import { FallbackView } from '../../theme/partials';
 
-const VirtualExamComponent = dynamic(() => import('../../modules/exam-builder/components/VirtualExam'), {
-    loading: () => <FallbackView />,
-    ssr: false,
+// Ensure that the dynamically imported component has a default export
+const VirtualExam = dynamic(() => import('../../modules/exam-builder/components/virtualExam').then((mod) => mod.default), {
+  loading: () => <FallbackView />,
+  ssr: false,
 });
 
-const VirtualExam = () => {
-    return <VirtualExamComponent />;
+const MenuTest = () => {
+  return <VirtualExam />;
 };
 
-export default VirtualExam;
+export default MenuTest;
