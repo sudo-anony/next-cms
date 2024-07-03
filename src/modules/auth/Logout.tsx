@@ -6,7 +6,6 @@ export function Logout() {
 
   const dispatch = useDispatch()
   useEffect(() => {
-    debugger
     const router = useRouter();
     sessionStorage.removeItem("token");
     dispatch(auth.actions.logout())

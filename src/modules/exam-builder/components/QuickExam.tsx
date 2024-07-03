@@ -16,7 +16,7 @@ import { CompleteExam, PossibleAnswer, QuestionDiscussion, Answer } from '../mod
 import * as crud from '../redux/EXAMCRUD';
 import PAnswer from "../components/PossibleAnswer";
 import { Discussion } from './Discussion';
-import Submission from "./subMission";
+import Submission from "./result";
 import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
 import BackupTwoToneIcon from '@mui/icons-material/BackupTwoTone';

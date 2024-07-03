@@ -39,12 +39,8 @@ export interface ExamModel {
   export interface Answer {
     possible_answer_id: number
     correct: boolean
-  }
-
-  export interface Answer {
-    id: number,
+    id: number
     content: string
-    correct: boolean
   }
 
   export interface QuestionDiscussion {
@@ -63,4 +59,24 @@ export interface ExamModel {
     questionsCount: string;
     status: string;
     showToken: boolean;
+}
+
+
+
+export interface ResultData {
+  exam: ExamModel;
+  quiz: QuizModel;
+  submitted_data: Array<{
+      question: QuestionModel;
+      answer: Answer;
+  }>;
+}
+
+export interface RecommendationProps {
+  accuracyPercentage: number;
+  difficulty: string;
+  attempted: number;
+  correct: number;
+  incorrect: number;
+  unattempted: number;
 }

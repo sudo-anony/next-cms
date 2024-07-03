@@ -12,10 +12,15 @@ export const FETCH_USER_CLASSFIED_EXAMS = `${API_URL}/explorer/quick_exams/fetch
 export const FETCH_QUIZ_BY_EXAM_ID = `${API_URL}/explorer/quick_exams/fetch_quiz_by_exam`;
 export const FETCH_SUBMITTED_ANSWER = `${API_URL}/explorer/quick_exams/fetch_submitted_answer`;
 export const CREATE_VIRTUAL_EXAM = `${API_URL}/explorer/personalized_exams`;
+export const FETCH_RESULT_SCREEN = `${API_URL}/explorer/quick_exams/result`;
 
 
 export function startExam(token: string): AxiosPromise {
   return axios.get(GET_EXAM_BY_ACCESSTOKEN+token);
+}
+
+export function result(id: string): AxiosPromise {
+  return axios.get(`${FETCH_RESULT_SCREEN}?id=${id}`);
 }
 
 export async function fetchPossibleAnswers(id: number): Promise<PossibleAnswer[]> {

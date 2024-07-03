@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { shallowEqual, useSelector } from 'react-redux';
-
+import { Alert } from 'react-bootstrap';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -18,6 +18,7 @@ import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
 import BackupTwoToneIcon from '@mui/icons-material/BackupTwoTone';
 import NavigateNextTwoToneIcon from '@mui/icons-material/NavigateNextTwoTone';
+import DOMPurify from 'dompurify';
 
 const VirtualExam: React.FC = () => {
     const [submittedAnswer, setSubmittedAnswer] = useState<Answer | undefined>(undefined);
@@ -25,9 +26,9 @@ const VirtualExam: React.FC = () => {
     const [selectedAnswers, setSelectedAnswers] = useState<{ [key: number]: number }>({});
     const [possibleAnswers, setPossibleAnswers] = useState<PossibleAnswer[]>([]);
     const completeExam = useSelector<RootState, CompleteExam | undefined>(({ exam }) => exam?.completeExam, shallowEqual);
-
+    const [showFullScreen, setShowFullScreen] = useState(true);
     const containerRef = useRef<HTMLDivElement>(null);
-
+    const sanitizedSummary = DOMPurify.sanitize(completeExam?.quiz.summary);
     const fetchSubmittedAnswer = useCallback(async () => {
         const questionId = completeExam?.questions[selectedQuestionIndex]?.id;
         const examId = completeExam?.exam.id;
@@ -120,97 +121,125 @@ const VirtualExam: React.FC = () => {
         }
     }, [completeExam, saveAnswer, selectedAnswers, selectedQuestionIndex]);
 
+    const handleButtonClick = useCallback(() => {
+        const element = document.documentElement;
+        if (element.requestFullscreen) {
+            element.requestFullscreen()
+                .then(() => setShowFullScreen(false))
+                .catch(error => console.error('Failed to enter fullscreen mode:', error));
+        }
+    }, []);
+
     return (
         <div ref={containerRef}>
+            {showFullScreen ? (
+                <div className="fullscreen-overlay-virtual">
+                    <div className='container-fluid'>
+                        <Alert variant="success">
+                            <Alert.Heading>Virtual Exam Summary</Alert.Heading>
+                            <p dangerouslySetInnerHTML={{ __html: sanitizedSummary }} />
+                        </Alert>
+                    </div>
+                    <Button variant="contained" color="primary" size="large" onClick={handleButtonClick} className="fullscreen-button">Start Virtual Exam</Button>
+                </div>
+            ) : (
+                <div className="row m-0 exam-fullscreen-overlay">
+                    <div className='col-md-6'>
+                        <div className="card card-xxl-stretch my-5 bg-secondary">
+                            <div className="card-header align-items-center border-0 mt-4">
+                                <h3 className="card-title align-items-start flex-column">
+                                    <div className='d-flex justify-content-center'>
+                                        <div className="fw-bolder mb-2 text-dark h1">{completeExam?.exam.title}</div>
+                                        <Button variant="contained" color="error" size="large" onClick={saveAnswer}>
+                                            <span className='mx-2'>Leave</span> <NavigateNextTwoToneIcon />
+                                        </Button>
+                                    </div>
 
-            <div className="row m-0 exam-fullscreen-overlay">
-                <div className='col-md-6'>
-                    <div className="card card-xxl-stretch my-5 bg-secondary">
-                        <div className="card-header align-items-center border-0 mt-4">
-                            <h3 className="card-title align-items-start flex-column">
-                                <span className="fw-bolder mb-2 text-dark h1">{completeExam?.exam.title}</span>
-                                <Box sx={{ width: '100%' }}>
-                                    <Tabs
 
-                                        textColor="primary"
-                                        indicatorColor="primary"
-                                        aria-label="secondary tabs example"
-                                    >
-                                        <Tab value="one" label="Question" sx={{ fontWeight: "1000", fontSize: "18px" }} />
+                                    <Box sx={{ width: '100%' }}>
+                                        <Tabs
 
-                                    </Tabs>
+                                            textColor="primary"
+                                            indicatorColor="primary"
+                                            aria-label="secondary tabs example"
+                                        >
+                                            <Tab value="one" label="Question" sx={{ fontWeight: "1000", fontSize: "18px" }} />
+
+                                        </Tabs>
+                                    </Box>
+                                </h3>
+                            </div>
+                            <div className="card-body set-134-percent-height overflow-auto">
+                                <Box>
+                                    {completeExam && (
+                                        <Question questionData={completeExam?.questions[selectedQuestionIndex]} />
+                                    )}
                                 </Box>
-                            </h3>
-                        </div>
-                        <div className="card-body set-134-percent-height overflow-auto">
-                            <Box>
-                                {completeExam && (
-                                    <Question questionData={completeExam?.questions[selectedQuestionIndex]} />
-                                )}
-                            </Box>
-                        </div>
-                    </div>
-                </div>
-                <div className='col-md-6'>
-                    <div className="card card-xxl-stretch my-5 bg-dark">
-                        <div className="card-header align-items-center border-0 mt-4">
-                            <h3 className="card-title align-items-start flex-column">
-                                <span className="fw-bolder mb-2 text-light">Choose your answer carefully</span>
-                            </h3>
-                            <div className='card-toolbar'>
-                                <Button variant="contained" color="success" size="large" onClick={saveAnswer}>
-                                    <span className='mx-2'>Submit</span> <BackupTwoToneIcon />
-                                </Button>
-                                <Button className='mx-2' variant="contained" color="primary" size="large" onClick={handleNextButtonClick}>
-                                    <span className='mx-2'>Next</span> <NavigateNextTwoToneIcon />
-                                </Button>
-                            </div>
-                        </div>
-                        <div className="card-body set-80-percent-height overflow-auto">
-                            <Box>
-                                {possibleAnswers.map((item: PossibleAnswer, index: number) => (
-                                    <PAnswer
-                                        key={index}
-                                        possibleAnswer={item}
-                                        index={index}
-                                        isSelected={selectedAnswers[selectedQuestionIndex] === index}
-                                        onSelect={() => handleAnswerSelect(selectedQuestionIndex, index)}
-                                        status={completeExam?.exam.status}
-                                        submittedAnswer={submittedAnswer}
-                                    />
-                                ))}
-                            </Box>
-                            <div className="pagination">
-                                <Stack spacing={2}>
-                                    <Pagination
-                                        showFirstButton
-                                        showLastButton
-                                        size="large"
-                                        color="primary"
-                                        count={completeExam?.questions.length}
-                                        page={selectedQuestionIndex + 1}
-                                        onChange={(event, value) => handlePaginationItemClick(value - 1)}
-                                        renderItem={(item) => {
-                                            const { onClick, ...rest } = item;
-                                            const questionIndex = (item.page ?? 1) - 1;
-                                            const isQuestionSelected = selectedAnswers[questionIndex] !== undefined;
-                                            return (
-                                                <PaginationItem
-                                                    {...rest}
-                                                    onClick={() => handlePaginationItemClick(questionIndex)}
-                                                    slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                                                    sx={{ color: isQuestionSelected ? '#1976d2' : 'white', fontSize: "20px" }}
-                                                />
-                                            );
-                                        }}
-                                    />
-                                </Stack>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                    <div className='col-md-6'>
+                        <div className="card card-xxl-stretch my-5 bg-dark">
+                            <div className="card-header align-items-center border-0 mt-4">
+                                <h3 className="card-title align-items-start flex-column">
+                                    <span className="fw-bolder mb-2 text-light">Choose your answer carefully</span>
+                                </h3>
+                                <div className='card-toolbar'>
+                                    <Button variant="contained" color="success" size="large" onClick={saveAnswer}>
+                                        <span className='mx-2'>Submit</span> <BackupTwoToneIcon />
+                                    </Button>
+                                    <Button className='mx-2' variant="contained" color="primary" size="large" onClick={handleNextButtonClick}>
+                                        <span className='mx-2'>Next</span> <NavigateNextTwoToneIcon />
+                                    </Button>
+                                </div>
+                            </div>
+                            <div className="card-body set-80-percent-height overflow-auto">
+                                <Box>
+                                    {possibleAnswers.map((item: PossibleAnswer, index: number) => (
+                                        <PAnswer
+                                            key={index}
+                                            possibleAnswer={item}
+                                            index={index}
+                                            isSelected={selectedAnswers[selectedQuestionIndex] === index}
+                                            onSelect={() => handleAnswerSelect(selectedQuestionIndex, index)}
+                                            status={completeExam?.exam.status}
+                                            submittedAnswer={submittedAnswer}
+                                        />
+                                    ))}
+                                </Box>
+                                <div className="pagination">
+                                    <Stack spacing={2}>
+                                        <Pagination
+                                            showFirstButton
+                                            showLastButton
+                                            size="large"
+                                            color="primary"
+                                            count={completeExam?.questions.length}
+                                            page={selectedQuestionIndex + 1}
+                                            onChange={(event, value) => handlePaginationItemClick(value - 1)}
+                                            renderItem={(item) => {
+                                                const { onClick, ...rest } = item;
+                                                const questionIndex = (item.page ?? 1) - 1;
+                                                const isQuestionSelected = selectedAnswers[questionIndex] !== undefined;
+                                                return (
+                                                    <PaginationItem
+                                                        {...rest}
+                                                        onClick={() => handlePaginationItemClick(questionIndex)}
+                                                        slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                                                        sx={{ color: isQuestionSelected ? '#1976d2' : 'white', fontSize: "20px" }}
+                                                    />
+                                                );
+                                            }}
+                                        />
+                                    </Stack>
 
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

@@ -79,6 +79,38 @@
     backdrop-filter: blur(8px);
 }
 
+.fullscreen-overlay-virtual {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 1%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(8px);
+}
+
+.fullscreen-overlay-result {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    min-height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    transition: opacity 0.3s ease;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+}
+
+.text-blue-font {
+    color: #CCFFFF;
+
+}
+
 .exam-fullscreen-overlay {
     background: rgba(0, 0, 0, 0.9);
     transition: opacity 0.3s ease;
@@ -115,6 +147,10 @@
 .column {
     overflow: auto;
     height: 100%;
+}
+
+.chart-container {
+    height: 250px;
 }
 
 @media (max-width: 768px) {

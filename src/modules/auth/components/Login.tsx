@@ -55,7 +55,6 @@ export function Login() {
             setLoading(false);
             dispatch(auth.actions.login(accessToken));
             sessionStorage.setItem("token", accessToken);
-            debugger
             router.push('/dashboard');
           })
           .catch(() => {
