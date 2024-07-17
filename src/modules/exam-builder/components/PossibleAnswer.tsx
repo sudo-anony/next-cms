@@ -1,5 +1,4 @@
 import React from 'react';
-import DOMPurify from 'dompurify';
 import { Answer, PossibleAnswer } from '../models/models';
 import { Avatar, Chip } from '@mui/material';
 import CheckIcon from '@mui/icons-material/Check';
@@ -16,7 +15,6 @@ const PAnswer: React.FC<{
     status?: string,
     submittedAnswer?: Answer
 }> = ({ possibleAnswer, index, isSelected, onSelect, status, submittedAnswer }) => {
-    const sanitizedContent = DOMPurify.sanitize(possibleAnswer.content);
     const avatarLabel = alphabet[index];
     const isReview = status === 'review';
     const isSubmitted = submittedAnswer?.possible_answer_id === possibleAnswer.id;
@@ -56,7 +54,8 @@ const PAnswer: React.FC<{
                 cursor: clickable ? 'pointer' : 'default',
             }}
             icon={icon}
-            label={<span dangerouslySetInnerHTML={{ __html: sanitizedContent }} />}
+            label={< span dangerouslySetInnerHTML={{ __html: possibleAnswer.content }
+            } />}
             onClick={clickable ? onSelect : undefined}
         />
     );

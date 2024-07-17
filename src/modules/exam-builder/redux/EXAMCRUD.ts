@@ -1,9 +1,10 @@
 import axios ,  { AxiosPromise } from 'axios'
 import { Answer, PossibleAnswer , QuestionDiscussion } from '../models/models'
 import { UserModel } from '../../auth/models/UserModel'
-import { QuizModel } from '../models/models';
+import { QuizModel , CodeLanguages } from '../models/models';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_API_URL 
+const END_POINT = process.env.NEXT_PUBLIC_API_ENDPOINT 
 export const GET_EXAM_BY_ACCESSTOKEN = `${API_URL}/explorer/quick_exams/`;
 export const FETCH_POSSIBLE_ANSWERS_URL = `${API_URL}/explorer/quick_exams/fetch_possible_answers`;
 export const FETCH_QUESTION_DISCUSSIONS = `${API_URL}/explorer/quick_exams/fetch_question_discussion`;
@@ -13,11 +14,21 @@ export const FETCH_QUIZ_BY_EXAM_ID = `${API_URL}/explorer/quick_exams/fetch_quiz
 export const FETCH_SUBMITTED_ANSWER = `${API_URL}/explorer/quick_exams/fetch_submitted_answer`;
 export const CREATE_VIRTUAL_EXAM = `${API_URL}/explorer/personalized_exams`;
 export const FETCH_RESULT_SCREEN = `${API_URL}/explorer/quick_exams/result`;
-
+export const GET_ALL_LANGUAES = `${END_POINT}/languages`
+export const SUBMIT_CODE = `${END_POINT}/submissions`
 
 export function startExam(token: string): AxiosPromise {
   return axios.get(GET_EXAM_BY_ACCESSTOKEN+token);
 }
+
+export function fetchLanguages(): AxiosPromise<CodeLanguages[]> {
+  return axios.get(GET_ALL_LANGUAES);
+}
+
+export function submitCode(formData: FormData): AxiosPromise {
+  return axios.post(`${SUBMIT_CODE}`, formData);
+}
+
 
 export function result(id: string): AxiosPromise {
   return axios.get(`${FETCH_RESULT_SCREEN}?id=${id}`);

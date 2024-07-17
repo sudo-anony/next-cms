@@ -234,7 +234,8 @@ const QuickExam: React.FC = () => {
                                         </Box>
                                     )}
                                     {tabValue === 'three' && (
-                                        <Submission questionData={undefined} />
+                                        <></>
+                                        // <Submission questionData={undefined} />
                                     )}
                                 </Box>
                             </div>

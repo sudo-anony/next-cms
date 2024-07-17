@@ -14,6 +14,7 @@ export interface ExamModel {
     start_date: string; 
     expire_date: string;
     userId: number;
+    summary: string;
 }
 
   export interface QuestionModel {
@@ -21,6 +22,13 @@ export interface ExamModel {
     title: string;
     userId: number;
     description: string;
+    question_type: string
+  }
+
+
+  export interface CodeLanguages {
+    id: number;
+    name: string;
   }
   
 

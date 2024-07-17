@@ -35,6 +35,9 @@ export default function setupAxios(axios: any, store: any) {
           case 401:
             errorMessage = 'Unauthorized';
             break;
+          case 422:
+            errorMessage = 'Unprocessable Entity';
+            break;
           case 403:
             errorMessage = 'Forbidden';
             break;

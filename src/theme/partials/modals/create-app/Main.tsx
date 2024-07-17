@@ -4,11 +4,12 @@ import { KTSVG, toAbsoluteUrl } from '../../../helpers'
 import { Formik, Form, FormikValues, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 import { StepperComponent } from '../../../assets/ts/components'
-import { useDispatch } from 'react-redux';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import * as examCrud from '../../../../modules/exam-builder/redux/EXAMCRUD';
 import { useRouter } from 'next/router';
 import { actions } from '../../../../modules/exam-builder/redux/ExamRedux';
-
+import { CompleteExam } from '@/modules/exam-builder/models/models'
+import { RootState } from '@/setup'
 interface ICreateVirtualExam {
   subjectName: string
   category: string
@@ -47,7 +48,9 @@ const Main: FC = () => {
   const stepperRef = useRef<HTMLDivElement | null>(null)
   const stepper = useRef<StepperComponent | null>(null)
   const [currentSchema, setCurrentSchema] = useState(createAppSchema[0])
+  const [hideModal, sethideModal] = useState(false)
   const [initValues] = useState<ICreateVirtualExam>(inits)
+  const completeExam = useSelector<RootState, CompleteExam | undefined>(({ exam }) => exam?.completeExam, shallowEqual);
 
 
 
@@ -65,15 +68,15 @@ const Main: FC = () => {
     setCurrentSchema(createAppSchema[stepper.current.currentStepIndex - 1])
   }
 
-  const submitStep = (values: ICreateVirtualExam, fActions: FormikValues) => {
+  const submitStep = async (values: ICreateVirtualExam, fActions: FormikValues) => {
     if (!stepper.current) {
-      return
+      return;
     }
 
-    setCurrentSchema(createAppSchema[stepper.current.currentStepIndex])
+    setCurrentSchema(createAppSchema[stepper.current.currentStepIndex]);
 
     if (stepper.current.currentStepIndex !== stepper.current.totatStepsNumber) {
-      stepper.current.goNext()
+      stepper.current.goNext();
     } else {
       const virtualExam = async (values: ICreateVirtualExam, formikActions: any) => {
         try {
@@ -91,18 +94,29 @@ const Main: FC = () => {
           const completeExam = { exam, quiz, questions };
           dispatch(actions.setExam(completeExam));
           dispatch(actions.setExamModulePath("ALI"));
-          redirect.push('/virtual-exam');
         } catch (error) {
           console.error('Error fetching exam token:', error);
         } finally {
           formikActions.setSubmitting(false);
+          fActions.resetForm();
+          sethideModal(true);
         }
       };
-      virtualExam(values, fActions);
-      // stepper.current.goto(1)
-      // actions.resetForm()
+      await virtualExam(values, fActions);
     }
   }
+
+  const navigateToExam = () => {
+    debugger
+    console.log(completeExam);
+    // if (completeExam?.questions[0].question_type == 'code'){
+    // redirect.push('/virtual-exam');
+    // }else{
+    redirect.push('/virtual-exam');
+    // }
+  }
+
+
 
   useEffect(() => {
     if (!stepperRef.current) {
@@ -565,8 +579,7 @@ const Main: FC = () => {
                           </div>
                         </div>
                       </div>
-
-                      <div className='d-flex flex-stack pt-10'>
+                      {(!hideModal && <div className='d-flex flex-stack pt-10'>
                         <div className='me-2'>
                           <button
                             onClick={prevStep}
@@ -583,7 +596,7 @@ const Main: FC = () => {
                         </div>
 
                         <div>
-                          <button type='submit' className='btn btn-lg btn-primary me-3'>
+                          <button type='submit' className='btn btn-lg btn-primary me-3' >
                             <span className='indicator-label'>
                               {stepper.current?.currentStepIndex !==
                                 stepper.current?.totatStepsNumber! - 1 && 'Continue'}
@@ -596,7 +609,23 @@ const Main: FC = () => {
                             </span>
                           </button>
                         </div>
-                      </div>
+                      </div>)}
+
+                      {(hideModal && <div className='d-flex flex-stack pt-10'>
+
+                        <div>
+                          <button type='reset' className='btn btn-lg btn-primary me-3' data-bs-dismiss='modal' onClick={navigateToExam} >
+                            <span className='indicator-label'>
+                              Start
+                              <KTSVG
+                                path='/media/icons/duotune/arrows/arr064.svg'
+                                className='svg-icon-3 ms-2 me-0'
+                              />
+                            </span>
+                          </button>
+                        </div>
+                      </div>)}
+
                     </Form>
                   )}
                 </Formik>
